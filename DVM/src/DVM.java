@@ -16,6 +16,10 @@ public class DVM {
         id = "9999";
     }
 
+    public String getId(){
+        return id;
+    }
+
     public Location getLocation() {
         return location;
     }
