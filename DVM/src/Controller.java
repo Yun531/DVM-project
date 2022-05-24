@@ -195,10 +195,9 @@ public class Controller {
         if(cardInfo.equals("0"))
             return; //showMenu로 돌아감
         else {
-            //check = CardCompany.isValidCard(cardInfo,totalPrice);
-            check = false; //위에 함수 없어서 우선 그냥 해 놓은 것.
+            check = CardCompany.isValidCard(cardInfo,totalPrice);
             if (check) {
-                //    CardCompany.deductMoney(cardInfo,totalPrice);
+                CardCompany.deductMoney(cardInfo,totalPrice);
                 myDVM.updateStock(Integer.parseInt(dCode), count);    //뭔가 넘겨야 할 것 같다. (count, code)
                 getOutDrink(Integer.parseInt(dCode) + count*100);  //updateStock이 잘 되면 진행해야 할 것 같다.
                 return;
