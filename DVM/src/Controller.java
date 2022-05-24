@@ -542,22 +542,23 @@ public class Controller {
 
     public void receiveMsg(Message msg) {  //myDVM.checkStock() 구현 봐야 함
         String msgType = msg.getMsgType();
-
+        dCode = msg.getMsgDescription().getItemCode();
+        count = msg.getMsgDescription().getItemNum();
         switch(msgType){
             case "StockCheckRequest":
-                if(myDVM.checkStock(Integer.parseInt(msg.getMsgDescription().getItemCode()), msg.getMsgDescription().getItemNum())) {
+                if(myDVM.checkStock(Integer.parseInt(dCode), count)) {
                     myMessageManager.sendResMsg("StockCheckResponse", dCode, count, myDVM.getId(), myDVM.getLocation());
                 }
                 break;
             case "SalesCheckRequest":
-                if(myDVM.checkStock(Integer.parseInt(msg.getMsgDescription().getItemCode()), msg.getMsgDescription().getItemNum())){
-                    if(myDVM.updateStock(Integer.parseInt(msg.getMsgDescription().getItemCode()), msg.getMsgDescription().getItemNum())){
+                if(myDVM.checkStock(Integer.parseInt(dCode), count)){
+                    if(myDVM.updateStock(Integer.parseInt(dCode), count)){
                         myMessageManager.sendResMsg("SalesCheckResponse", dCode, myDVM.getId(), myDVM.getLocation());
                     }
                 }
                 break;
             case "PrepaymentCheck":
-                myDVM.saveVerificationCode(msg.getMsgDescription().getAuthCode(), Integer.parseInt(msg.getMsgDescription().getItemCode()), msg.getMsgDescription().getItemNum());
+                myDVM.saveVerificationCode(msg.getMsgDescription().getAuthCode(), Integer.parseInt(dCode), count);
                 break;
             case "StockCheckResponse":
             case "SalesCheckResponse":
