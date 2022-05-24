@@ -68,8 +68,8 @@ public class Item {
                 name = "카페라떼";
                 break;
         }
-        price = 0;
-        stock = 0;
+        price = 1000;
+        stock = 10;
     }
 
     public String getName() {
