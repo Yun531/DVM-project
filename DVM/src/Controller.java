@@ -5,11 +5,13 @@ public class Controller {
 
     public Controller() {
         myDVM = new DVM();
+        myMessageManager = new MessageManager();
     }
 
     private String dCode;
     private int count;
     private DVM myDVM;
+    private MessageManager myMessageManager;
 
     Scanner scan=new Scanner(System.in);
 
@@ -62,7 +64,7 @@ public class Controller {
                 showVerificationCodeMenu();
                 break;
             case 3:
-                showAdminPasswordPage();
+                showAdminMenu();
                 break;
         }
     }
@@ -257,7 +259,10 @@ public class Controller {
         boolean numberFlag = false, letterFlag = false;
         char chrInput;
 
-        if(vCode.length() == 10){
+        if(vCode.equals("0")){
+            return true;
+        }
+        else if(vCode.length() == 10){
             for(int i = 0; i < vCode.length(); i++){
                 chrInput = vCode.charAt(i);
                 if (chrInput >= 0x61 && chrInput <= 0x7A) {
@@ -480,13 +485,13 @@ public class Controller {
         switch(msgType){
             case "StockCheckRequest":
                 if(myDVM.checkStock(Integer.parseInt(msg.getMsgDescription().getItemCode()), msg.getMsgDescription().getItemNum())) {
-                    //재고 확인 응답 message 보냄
+                    myMessageManager.sendResMsg("StockCheckResponse", dCode, count, myDVM.getId(), myDVM.getLocation());
                 }
                 break;
             case "SalesCheckRequest":
                 if(myDVM.checkStock(Integer.parseInt(msg.getMsgDescription().getItemCode()), msg.getMsgDescription().getItemNum())){
                     if(myDVM.updateStock(Integer.parseInt(msg.getMsgDescription().getItemCode()), msg.getMsgDescription().getItemNum())){
-                        //음표 판매 응답 message 보냄
+                        myMessageManager.sendResMsg("SalesCheckResponse", dCode, myDVM.getId(), myDVM.getLocation());
                     }
                 }
                 break;
