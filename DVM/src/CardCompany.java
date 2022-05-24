@@ -15,7 +15,7 @@ public class CardCompany {
         boolean test = false;
 
         for(int i = 0; i < 5; i++) {
-            if (cardInfo == cardList[i].getInformation()) {
+            if (cardInfo.equals(cardList[i].getInformation())) {
                 if(isEnoughBalance(totalPrice, i)) {
                     test = true;
                 }
@@ -27,17 +27,17 @@ public class CardCompany {
     public static boolean isEnoughBalance(int totalPrice, int i) {
         boolean test = false;
 
-        if(totalPrice >= cardList[i].getBalance()) {
+        if(totalPrice <= cardList[i].getBalance()) {
             test = true;
         }
         return test;
     }
 
     public static int deductMoney(String cardInfo, int totalPrice) {
-        int i = 0;
+        int i;
         int temp;
         for (i = 0; i < 5; i++) {
-            if(cardInfo == cardList[i].getInformation()){
+            if(cardInfo.equals(cardList[i].getInformation())){
                 break;
             }
         }
