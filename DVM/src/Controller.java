@@ -12,6 +12,7 @@ public class Controller {
     private int count;
     private DVM myDVM;
     private MessageManager myMessageManager;
+    ArrayList<Message> myMessage= new ArrayList<Message>();
 
     Scanner scan=new Scanner(System.in);
 
@@ -487,12 +488,18 @@ public class Controller {
                     myMessageManager.sendResMsg("StockCheckResponse", dCode, count, myDVM.getId(), myDVM.getLocation());
                 }
                 break;
+            case "StockCheckResponse":
+                myMessage.add(msg);
+                break;
             case "SalesCheckRequest":
                 if(myDVM.checkStock(Integer.parseInt(msg.getMsgDescription().getItemCode()), msg.getMsgDescription().getItemNum())){
                     if(myDVM.updateStock(Integer.parseInt(msg.getMsgDescription().getItemCode()), msg.getMsgDescription().getItemNum())){
                         myMessageManager.sendResMsg("SalesCheckResponse", dCode, myDVM.getId(), myDVM.getLocation());
                     }
                 }
+                break;
+            case "SalesCheckResponse":
+                myMessage.add(msg);
                 break;
             case "PrepaymentCheck":
                 myDVM.saveVerificationCode(msg.getMsgDescription().getAuthCode(), Integer.parseInt(msg.getMsgDescription().getItemCode()), msg.getMsgDescription().getItemNum());
