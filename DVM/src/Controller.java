@@ -22,7 +22,7 @@ public class Controller {
 
         while (true) {
             try {
-                System.out.println("원하시는 메뉴의 번호를 입력해주세요.\n" +
+                System.out.println("\n원하시는 메뉴의 번호를 입력해주세요.\n" +
                         "1. 음료 선택\n" +
                         "2. 인증코드 입력\n" +
                         "3. 관리자 모드\n" +

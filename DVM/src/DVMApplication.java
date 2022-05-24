@@ -1,4 +1,6 @@
 import DVM_Server.DVMServer;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 class MyDVMServer implements Runnable {
     DVMServer server;
@@ -31,15 +33,21 @@ public class DVMApplication {
         MessageManager messageManager = new MessageManager();
 
 
-        while (true) {
-            if (server.msgList.size() > 0) {
-                controller.receiveMsg(server.msgList.get(server.msgList.size() - 1));
-                Thread.sleep(5000);
-                server.msgList.remove(server.msgList.size() - 1);
+        ExecutorService executorService = Executors.newCachedThreadPool();
 
-            } else {
-                System.out.println("not");
+        executorService.submit(()-> {
+            while (true) {
+                if (server.msgList.size() > 0) {
+                    controller.receiveMsg(server.msgList.get(server.msgList.size() - 1));
+                    Thread.sleep(5000);
+                    server.msgList.remove(server.msgList.size() - 1);
+
+                }
             }
+        });
+
+        while(true) {
+            controller.showMenu();
         }
     }
 
