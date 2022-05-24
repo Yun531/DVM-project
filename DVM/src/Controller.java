@@ -116,7 +116,44 @@ public class Controller {
         int x = myLoc.getX();
         int y = myLoc.getY();
         int min = 9999;
+        String tempID = " ";
         // Todo: Server 내에 msgList에 접근하여 수신(응답)받은 Message Object를 하나씩 가져온다.
+        myMessageManager.sendReqMsg("StockCheckRequest",dCode,count);
+        try{
+            Thread.sleep(5000); //message가 도착하고 처리 되기까지 기다리기
+        }catch(InterruptedException e){
+            e.printStackTrace();
+        }
+        while(myMessage.size() > 0){
+            Message temp = myMessage.remove(0);
+            int compareX = temp.getMsgDescription().getDvmXCoord();
+            int compareY = temp.getMsgDescription().getDvmYCoord();
+            String compareID = temp.getSrcId();
+            //1. 거리를 구하고
+            int resX = x - compareX;
+            if (resX < 0) resX *= -1;
+            int resY = y - compareY;
+            if (resY < 0) resY *= -1;
+            //2. min과 비교하고
+            if( resX + resY < min) {
+            //3.
+                //더 작다면 other DVM의 위치를 저장한다.
+                tempID = compareID;
+                returnLoc.setX(compareX);
+                returnLoc.setY(compareY);
+            }else if (resX + resY == min) {
+                //같다면 id를 비교하고
+                if(tempID.compareTo(compareID)>0){
+                    tempID = compareID;
+                    returnLoc.setX(compareX);
+                    returnLoc.setY(compareY);
+                };
+            }
+                //더 멀다면 넘어가고
+
+
+        }
+
 
         return returnLoc;
     }
