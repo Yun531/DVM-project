@@ -25,7 +25,7 @@ public class Controller {
                 System.out.println("원하시는 메뉴의 번호를 입력해주세요.\n" +
                         "1. 음료 선택\n" +
                         "2. 인증코드 입력\n" +
-                        "3. 관리자 모드" +
+                        "3. 관리자 모드\n" +
                         "> ");
                 mode = sc.nextInt();
                 break;
@@ -55,7 +55,7 @@ public class Controller {
                 }
             }
         }
-        sc.close();
+        //sc.close();
 
         switch (mode) {
             case 1:
@@ -200,6 +200,7 @@ public class Controller {
                 count = sc.nextInt();
             }
             catch(InputMismatchException ime) {
+                sc.nextLine();
                 System.out.println("잘못된 입력입니다. 정수만 입력해주세요.");
                 continue;
             }
