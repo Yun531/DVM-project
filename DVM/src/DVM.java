@@ -13,7 +13,7 @@ public class DVM {
         for(int i = 0; i < 20 ; ++i){
             itemList[i] = new Item(i);
         }
-        id = "9999";
+        id = "Team4";
     }
 
     public String getId(){
