@@ -285,7 +285,7 @@ public class Controller {
         boolean vCodeTR = false;
 
         Scanner sc = new Scanner(System.in);
-        while(!vCodeTR) {
+        while(true) {
             System.out.println("선결제 후 받은 인증코드를 입력해주세요\n" +
                     "(메뉴 선택으로 돌아가려면 “0”를 입력해주세요)\n" +
                     "> ");
@@ -296,10 +296,12 @@ public class Controller {
                 System.out.println("잘못된 입력입니다.");
                 continue;
             }
-            vCodeTR = isRightVerificationCode(vCode);          //인증코드 입력형식 test
-            if(!vCodeTR){
-                System.out.println("입력하신 인증코드가 입력형식에 맞지 않습니다.");
+
+            if(isRightVerificationCode(vCode)) {          //인증코드 입력형식 test
+                break;
             }
+            System.out.println("입력하신 인증코드가 입력형식에 맞지 않습니다.\n");
+
         }
 
         vCodeTR = myDVM.isValidVerificationCode(vCode);             //유효한 인증코드 test
