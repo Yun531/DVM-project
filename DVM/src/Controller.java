@@ -22,10 +22,10 @@ public class Controller {
 
         while (true) {
             try {
-                System.out.println("원하시는 메뉴의 번호를 입력해주세요.\n" +
+                System.out.println("\n원하시는 메뉴의 번호를 입력해주세요.\n" +
                         "1. 음료 선택\n" +
                         "2. 인증코드 입력\n" +
-                        "3. 관리자 모드" +
+                        "3. 관리자 모드\n" +
                         "> ");
                 mode = sc.nextInt();
                 break;
@@ -55,7 +55,7 @@ public class Controller {
                 }
             }
         }
-        sc.close();
+        //sc.close();
 
         switch (mode) {
             case 1:
@@ -158,8 +158,14 @@ public class Controller {
         return returnLoc;
     }
 
-    public void showOtherDVM(Location otherDVM) {
-        System.out.println("재고가 있는 가장 가까운 DVM의 위치는 " + otherDVM.getX() + ", " + otherDVM.getY());
+    public boolean showOtherDVM(Location otherDVM) {
+        if((otherDVM.getX() == 0) && (otherDVM.getY() == 0)){
+            return false;
+        }
+        else{
+            System.out.println("재고가 있는 가장 가까운 DVM의 위치는 " + otherDVM.getX() + ", " + otherDVM.getY());
+            return true;
+        }
     }
 
     public void showSelectItemPage() {
@@ -200,6 +206,7 @@ public class Controller {
                 count = sc.nextInt();
             }
             catch(InputMismatchException ime) {
+                sc.nextLine();
                 System.out.println("잘못된 입력입니다. 정수만 입력해주세요.");
                 continue;
             }
@@ -216,8 +223,18 @@ public class Controller {
         if(myDVM.checkStock(Integer.parseInt(dCode), count)) {
             showPaymentPage(calculateTotalPrice());
         } else {
-            showOtherDVM(getClosestDVM());
-            showPaymentPage(calculateTotalPrice());
+            if(showOtherDVM(getClosestDVM())) {
+                showPaymentPage(calculateTotalPrice());
+
+                String UserVCode;
+                UserVCode = createVerificationCode();
+                myMessageManager.sendReqMsg("PrepaymentCheck", dCode, count, UserVCode);
+                System.out.println("선결제가 완료되었습니다.\n" +
+                        "인증코드: " + UserVCode);
+            }
+            else{
+                System.out.println("해당 음료에 대한 재고를 보유한 DVM이 존재하지 않습니다.");
+            }
         }
     }
 
@@ -226,7 +243,8 @@ public class Controller {
         boolean check;
 
         System.out.println("<결제>");
-        System.out.println("(메뉴 선택으로 돌아가려면 \"0\"을 입력해주세요.)");
+        System.out.println("(메뉴 선택으로 돌아가려면 \"0\"을 입력해주세요)\n");
+        System.out.println("카드 번호를 입력하세요.");
         System.out.print(">");
 
         cardInfo=scan.nextLine();
@@ -236,8 +254,9 @@ public class Controller {
             check = CardCompany.isValidCard(cardInfo,totalPrice);
             if (check) {
                 CardCompany.deductMoney(cardInfo,totalPrice);
-                myDVM.updateStock(Integer.parseInt(dCode), count);    //뭔가 넘겨야 할 것 같다. (count, code)
-                getOutDrink(Integer.parseInt(dCode) + count*100);  //updateStock이 잘 되면 진행해야 할 것 같다.
+                if(myDVM.updateStock(Integer.parseInt(dCode), count)) {
+                    getOutDrink(Integer.parseInt(dCode) + count * 100);
+                }
                 return;
             }
             else {
@@ -266,7 +285,7 @@ public class Controller {
         boolean vCodeTR = false;
 
         Scanner sc = new Scanner(System.in);
-        while(!vCodeTR) {
+        while(true) {
             System.out.println("선결제 후 받은 인증코드를 입력해주세요\n" +
                     "(메뉴 선택으로 돌아가려면 “0”를 입력해주세요)\n" +
                     "> ");
@@ -277,7 +296,12 @@ public class Controller {
                 System.out.println("잘못된 입력입니다.");
                 continue;
             }
-            vCodeTR = isRightVerificationCode(vCode);          //인증코드 입력형식 test
+
+            if(isRightVerificationCode(vCode)) {          //인증코드 입력형식 test
+                break;
+            }
+            System.out.println("입력하신 인증코드가 입력형식에 맞지 않습니다.\n");
+
         }
 
         vCodeTR = myDVM.isValidVerificationCode(vCode);             //유효한 인증코드 test
@@ -518,22 +542,23 @@ public class Controller {
 
     public void receiveMsg(Message msg) {  //myDVM.checkStock() 구현 봐야 함
         String msgType = msg.getMsgType();
-
+        dCode = msg.getMsgDescription().getItemCode();
+        count = msg.getMsgDescription().getItemNum();
         switch(msgType){
             case "StockCheckRequest":
-                if(myDVM.checkStock(Integer.parseInt(msg.getMsgDescription().getItemCode()), msg.getMsgDescription().getItemNum())) {
+                if(myDVM.checkStock(Integer.parseInt(dCode), count)) {
                     myMessageManager.sendResMsg("StockCheckResponse", dCode, count, myDVM.getId(), myDVM.getLocation());
                 }
                 break;
             case "SalesCheckRequest":
-                if(myDVM.checkStock(Integer.parseInt(msg.getMsgDescription().getItemCode()), msg.getMsgDescription().getItemNum())){
-                    if(myDVM.updateStock(Integer.parseInt(msg.getMsgDescription().getItemCode()), msg.getMsgDescription().getItemNum())){
+                if(myDVM.checkStock(Integer.parseInt(dCode), count)){
+                    if(myDVM.updateStock(Integer.parseInt(dCode), count)){
                         myMessageManager.sendResMsg("SalesCheckResponse", dCode, myDVM.getId(), myDVM.getLocation());
                     }
                 }
                 break;
             case "PrepaymentCheck":
-                myDVM.saveVerificationCode(msg.getMsgDescription().getAuthCode(), Integer.parseInt(msg.getMsgDescription().getItemCode()), msg.getMsgDescription().getItemNum());
+                myDVM.saveVerificationCode(msg.getMsgDescription().getAuthCode(), Integer.parseInt(dCode), count);
                 break;
             case "StockCheckResponse":
             case "SalesCheckResponse":
