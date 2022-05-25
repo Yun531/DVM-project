@@ -6,14 +6,16 @@ public class DVM {
     private Item[] itemList;
     private LinkedList<String> vCodeList = new LinkedList<String>();
     private LinkedList<String> prepayItemList = new LinkedList<String>();
+    private String adminPassword;
 
     public DVM() {
         this.location = new Location(0,0);
-        itemList = new Item[20];
+        this.itemList = new Item[20];
         for(int i = 0; i < 20 ; ++i){
-            itemList[i] = new Item(i);
+            this.itemList[i] = new Item(i);
         }
-        id = "Team4";
+        this.id = "Team4";
+        this.adminPassword = "1q2w3e4r";
     }
 
     public String getId(){
@@ -63,8 +65,7 @@ public class DVM {
     }
 
     public boolean isValidPassword(String pw) {
-        //Password 비교 대상을 어디에 둘지
-        return false;
+        return pw.equals(this.adminPassword);
     }
 
     public void saveDVMInfo(String id, Location location) {
