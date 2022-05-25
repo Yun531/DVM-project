@@ -18,7 +18,7 @@ public class Controller {
 
     public void showMenu() {
         int mode;
-        Scanner sc = new Scanner(System.in,"UTF-8");
+        Scanner sc = new Scanner(System.in);
 
         while (true) {
             try {
@@ -30,6 +30,7 @@ public class Controller {
                 mode = sc.nextInt();
                 break;
             } catch (InputMismatchException ime) {
+                sc.next();
                 System.out.println("잘못된 입력입니다. 정수만 입력해주세요.");
             }
         }
@@ -46,6 +47,7 @@ public class Controller {
                     mode = sc.nextInt();
                     break;
                 } catch (InputMismatchException ime) {
+                    sc.next();
                     System.out.println("잘못된 입력입니다. 정수만 입력해주세요.");
                     System.out.println("원하시는 메뉴의 번호를 입력해주세요.\n" +
                             "1. 음료 선택\n" +
@@ -605,9 +607,9 @@ public class Controller {
         }
     }
 
-    public void getOutDrink(int temp) {
-        int dCode_ = temp % 100;
-        int count_ = temp / 100;
+    public void getOutDrink(int Calc) {
+        int dCode_ = Calc % 100;
+        int count_ = Calc / 100;
 
         Item item = myDVM.getItemList()[dCode_ -1];
 
