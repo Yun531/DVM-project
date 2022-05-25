@@ -394,8 +394,10 @@ public class Controller {
                 setDrinkInfo();
             else if(menu == 3)
                 setDrinkKinds();
-            else if(menu == 0)
+            else if(menu == 0) {
+                scan.nextLine();
                 return; //showMenu로 돌아감
+            }
             else {
                 System.out.println("번호는 0~3만 입력하세요");
             }
@@ -414,14 +416,18 @@ public class Controller {
         String adminPassword;
         boolean check;
 
-        System.out.println("Admin password를 입력해 주세요");
-        System.out.println("(메뉴 선택으로 돌아가려면 \"0\"을 입력해주세요.)");
-        System.out.print(">");
+
 
         while(true) {
+            System.out.println("Admin password를 입력해 주세요");
+            System.out.println("(메뉴 선택으로 돌아가려면 \"0\"을 입력해주세요.)");
+            System.out.print(">");
+
             adminPassword = scan.nextLine();
-            if(adminPassword.equals("0"))
+            if(adminPassword.equals("0")) {
+                scan.nextLine();
                 return; //showMenu로 돌아감
+            }
             else {
                 check = checkAdminPassword(adminPassword);
                 if (check) {
@@ -445,9 +451,10 @@ public class Controller {
         System.out.println("id 입력 후 tab을 눌러 좌표를 입력하세요\n");
         System.out.println("id  좌표");
         System.out.println("EX: Team4   10 20");
-        System.out.print(">");
+
 
         while(true) {
+            System.out.print(">");
             inputId = scan.next();
             if(inputId.equals(name)) {
                 break;
@@ -492,18 +499,18 @@ public class Controller {
         System.out.println("enter를 눌러 다음 음료를 입력하세요.\n");
         System.out.println("음료코드\t음료 이름\t가격\t재고\t판매여부");
 
-        for(int i=1;i<myItem.length;i++) {
+        for(int i=0;i<myItem.length;i++) {
             if(myItem[i].getStock()==-1) {
-                if(i >= 1 && i <= 9)
-                    System.out.println("0" + i + "\t" + myItem[i].getName() + "\t" + myItem[i].getPrice() + "\t" + "_" + "\t" + "X");
+                if(i >= 0 && i <= 8)
+                    System.out.println("0" + (i+1) + "\t" + myItem[i].getName() + "\t" + myItem[i].getPrice() + "\t" + "_" + "\t" + "X");
                 else
-                    System.out.println(i + "\t" + myItem[i].getName() + "\t" + myItem[i].getPrice() + "\t" + "_" + "\t" + "X");
+                    System.out.println((i+1) + "\t" + myItem[i].getName() + "\t" + myItem[i].getPrice() + "\t" + "_" + "\t" + "X");
             }
             else {
-                if(i >= 1 && i <= 9)
-                    System.out.println("0" + i + "\t" + myItem[i].getName() + "\t");
+                if(i >= 0 && i <= 8)
+                    System.out.println("0" + (i+1) + "\t" + myItem[i].getName() + "\t");
                 else
-                    System.out.println(i + "\t" + myItem[i].getName() + "\t");
+                    System.out.println((i+1) + "\t" + myItem[i].getName() + "\t");
                 System.out.print(">");
 
                 int price = 0;
@@ -531,7 +538,7 @@ public class Controller {
                         }
                     }
                 }
-                myDVM.saveDrinkInfo(i, price, stock, myItem[i].getName());
+                myDVM.saveDrinkInfo(i+1, price, stock, myItem[i].getName());
                 scan.nextLine();
             }
         }
@@ -543,13 +550,14 @@ public class Controller {
         int[] dCodeArr = new int[7];
 
         System.out.println("<음료 세팅>");
-        System.out.println("현재 자판기에서 판매할 7가지 음료의 번호를 차례로 입력해주세요");
+        System.out.println("현재 자판기에서 판매할 7가지 음료의 번호를 입력하고 enter를 눌러주세요");
         System.out.println("콜라(01) 사이다(02) 녹차(03) 홍차(04) 밀크티(05) 탄산수(06) 보리차(07) 캔커피(08) 물(09) 에너지드링크(10) " +
                 "바닷물(11) 식혜(12) 아이스티(13) 딸기주스(14) 오렌지주스(15) 포도주스(16) 이온음료(17) 아메리카노(18)" +
                 "핫초코(19) 카페라떼(20)");
-        System.out.print(">");
+
 
         while(true) {
+            System.out.print(">");
             while(!scan.hasNextInt()) {
                 scan.next();
                 System.out.println("정확한 번호만 입력하세요");
