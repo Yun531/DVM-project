@@ -371,17 +371,18 @@ public class Controller {
     public void showAdminPasswordPage() {
         int menu;
 
-        System.out.println("<관리자 모드>");
-        System.out.println("원하는 작업의 번호를 선택해주세요.");
-        System.out.println("(메뉴 선택으로 돌아가려면 \"0\"을 입력해주세요.");
-
-        System.out.println("1. DVM 정보 관리");
-        System.out.println("2. 음료 정보 관리");
-        System.out.println("3. 음료 세팅");
-
-        System.out.print(">");
-
         while(true) {
+
+            System.out.println("<관리자 모드>");
+            System.out.println("원하는 작업의 번호를 선택해주세요.");
+            System.out.println("(메뉴 선택으로 돌아가려면 \"0\"을 입력해주세요.)");
+
+            System.out.println("1. DVM 정보 관리");
+            System.out.println("2. 음료 정보 관리");
+            System.out.println("3. 음료 세팅");
+
+            System.out.print(">");
+
             while(!scan.hasNextInt()) {
                 scan.next();
                 System.out.println("정확한 번호만 입력하세요");
@@ -414,7 +415,7 @@ public class Controller {
         boolean check;
 
         System.out.println("Admin password를 입력해 주세요");
-        System.out.println("(메뉴 선택으로 돌아가려면 \"0\"을 입력해주세요.");
+        System.out.println("(메뉴 선택으로 돌아가려면 \"0\"을 입력해주세요.)");
         System.out.print(">");
 
         while(true) {
@@ -443,7 +444,7 @@ public class Controller {
         System.out.println("<DVM 정보 관리>");
         System.out.println("id 입력 후 tab을 눌러 좌표를 입력하세요\n");
         System.out.println("id  좌표");
-        System.out.println("Team4   10 20");
+        System.out.println("EX: Team4   10 20");
         System.out.print(">");
 
         while(true) {
@@ -557,8 +558,10 @@ public class Controller {
             if(drinkCode >= 1 && drinkCode <= 20) {
                 dCodeArr[count] = drinkCode;
                 count++;
-                if(count == 7)
+                if(count == 7) {
+                    scan.nextLine();
                     break;
+                }
             }
             else {
                 System.out.println("번호는 01~20만 입력하세요");
