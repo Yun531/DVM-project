@@ -47,6 +47,7 @@ public class Controller {
                     mode = sc.nextInt();
                     break;
                 } catch (InputMismatchException ime) {
+                    sc.next();
                     System.out.println("잘못된 입력입니다. 정수만 입력해주세요.");
                     System.out.println("원하시는 메뉴의 번호를 입력해주세요.\n" +
                             "1. 음료 선택\n" +
