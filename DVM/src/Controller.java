@@ -427,7 +427,6 @@ public class Controller {
 
             adminPassword = scan.nextLine();
             if(adminPassword.equals("0")) {
-                scan.nextLine();
                 return; //showMenu로 돌아감
             }
             else {
@@ -499,20 +498,20 @@ public class Controller {
         System.out.println("<음료 정보 관리>");
         System.out.println("음료 정보 관리 시 tab을 눌러 다음 정보를 입력 후");
         System.out.println("enter를 눌러 다음 음료를 입력하세요.\n");
-        System.out.println("음료코드\t음료 이름\t가격\t재고\t판매여부");
+        System.out.println("음료코드\t\t가격\t\t\t재고\t\t판매여부\t\t음료이름");
 
         for(int i=0;i<myItem.length;i++) {
             if(myItem[i].getStock()==-1) {
                 if(i >= 0 && i <= 8)
-                    System.out.println("0" + (i+1) + "\t" + myItem[i].getName() + "\t" + myItem[i].getPrice() + "\t" + "_" + "\t" + "X");
+                    System.out.println("0" + (i+1) + "\t\t\t" + myItem[i].getPrice() + "\t\t" + "_" + "\t\t" + "X"+ "\t\t\t" + myItem[i].getName() );
                 else
-                    System.out.println((i+1) + "\t" + myItem[i].getName() + "\t" + myItem[i].getPrice() + "\t" + "_" + "\t" + "X");
+                    System.out.println((i+1)  + "\t\t\t" + myItem[i].getPrice() + "\t\t" + "_" + "\t\t" + "X"+ "\t\t\t" + myItem[i].getName());
             }
             else {
                 if(i >= 0 && i <= 8)
-                    System.out.println("0" + (i+1) + "\t" + myItem[i].getName() + "\t");
+                    System.out.println("0" + (i+1) + "\t\t\t" + myItem[i].getName() + "\t\t\t");
                 else
-                    System.out.println((i+1) + "\t" + myItem[i].getName() + "\t");
+                    System.out.println((i+1) + "\t\t\t" + myItem[i].getName() + "\t\t\t");
                 System.out.print(">");
 
                 int price = 0;
@@ -553,10 +552,11 @@ public class Controller {
 
         System.out.println("<음료 세팅>");
         System.out.println("현재 자판기에서 판매할 7가지 음료의 번호를 입력하고 enter를 눌러주세요");
-        System.out.println("콜라(01) 사이다(02) 녹차(03) 홍차(04) 밀크티(05) 탄산수(06) 보리차(07) 캔커피(08) 물(09) 에너지드링크(10) " +
-                "바닷물(11) 식혜(12) 아이스티(13) 딸기주스(14) 오렌지주스(15) 포도주스(16) 이온음료(17) 아메리카노(18)" +
-                "핫초코(19) 카페라떼(20)");
-
+        System.out.println("콜라(01)     사이다(02)     녹차(03)      홍차(04)\n" +
+                "밀크티(05)   탄산수(06)     보리차(07)     캔커피(08)\n" +
+                "물(09)      에너지드링크(10) 바닷물(11)    식혜(12)\n" +
+                "아이스티(12) 딸기주스(14)    오렌지주스(15) 포도주스(16)\n" +
+                "이온음료(17) 아메리카노(18)   핫초코(19)    카페라뗴(20)");
 
         while(true) {
             System.out.print(">");
