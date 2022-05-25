@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="dvm_network_JDK11">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/DVM/lib/dvm_network_JDK11.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
