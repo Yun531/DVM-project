@@ -594,9 +594,9 @@ public class Controller {
         }
     }
 
-    public void getOutDrink(int temp) {
-        int dCode_ = temp % 100;
-        int count_ = temp / 100;
+    public void getOutDrink(int Calc) {
+        int dCode_ = Calc % 100;
+        int count_ = Calc / 100;
 
         Item item = myDVM.getItemList()[dCode_ -1];
 
