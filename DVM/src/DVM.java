@@ -65,7 +65,7 @@ public class DVM {
     }
 
     public boolean isValidPassword(String pw) {
-        return pw==this.adminPassword;
+        return pw.equals(this.adminPassword);
     }
 
     public void saveDVMInfo(String id, Location location) {
