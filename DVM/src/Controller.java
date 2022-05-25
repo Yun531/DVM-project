@@ -18,7 +18,7 @@ public class Controller {
 
     public void showMenu() {
         int mode;
-        Scanner sc = new Scanner(System.in,"UTF-8");
+        Scanner sc = new Scanner(System.in);
 
         while (true) {
             try {
@@ -30,6 +30,7 @@ public class Controller {
                 mode = sc.nextInt();
                 break;
             } catch (InputMismatchException ime) {
+                sc.next();
                 System.out.println("잘못된 입력입니다. 정수만 입력해주세요.");
             }
         }
