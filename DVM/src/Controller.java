@@ -565,9 +565,21 @@ public class Controller {
                 System.out.println("정확한 번호만 입력하세요");
             }
             drinkCode=scan.nextInt();
+
             if(drinkCode >= 1 && drinkCode <= 20) {
+
                 dCodeArr[count] = drinkCode;
                 count++;
+
+                for(int i=0;i<count-1;i++)
+                {
+                    if(dCodeArr[i]==drinkCode){
+                        count--;
+                        System.out.println("같은 음료가 이미 세팅되어 있습니다.");
+                        break;
+                    }
+                }
+
                 if(count == 7) {
                     scan.nextLine();
                     break;
