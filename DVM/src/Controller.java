@@ -18,15 +18,15 @@ public class Controller {
 
     public void showMenu() {
         int mode;
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in,"UTF-8");
 
         while (true) {
             try {
                 System.out.println("\n원하시는 메뉴의 번호를 입력해주세요.\n" +
                         "1. 음료 선택\n" +
                         "2. 인증코드 입력\n" +
-                        "3. 관리자 모드\n" +
-                        "> ");
+                        "3. 관리자 모드");
+                System.out.print(">");
                 mode = sc.nextInt();
                 break;
             } catch (InputMismatchException ime) {
@@ -39,8 +39,8 @@ public class Controller {
             System.out.println("원하시는 메뉴의 번호를 입력해주세요.\n" +
                     "1. 음료 선택\n" +
                     "2. 인증코드 입력\n" +
-                    "3. 관리자 모드" +
-                    "> ");
+                    "3. 관리자 모드");
+            System.out.print(">");
             while (true) {
                 try {
                     mode = sc.nextInt();
@@ -50,8 +50,8 @@ public class Controller {
                     System.out.println("원하시는 메뉴의 번호를 입력해주세요.\n" +
                             "1. 음료 선택\n" +
                             "2. 인증코드 입력\n" +
-                            "3. 관리자 모드" +
-                            "> ");
+                            "3. 관리자 모드");
+                    System.out.print(">");
                 }
             }
         }
@@ -74,6 +74,33 @@ public class Controller {
         switch(dCode){
             case "0":
                 return 0;
+            case "1":
+                dCode = "01";
+                return 1;
+            case "2":
+                dCode = "02";
+                return 1;
+            case "3":
+                dCode = "03";
+                return 1;
+            case "4":
+                dCode = "04";
+                return 1;
+            case "5":
+                dCode = "05";
+                return 1;
+            case "6":
+                dCode = "06";
+                return 1;
+            case "7":
+                dCode = "07";
+                return 1;
+            case "8":
+                dCode = "08";
+                return 1;
+            case "9":
+                dCode = "09";
+                return 1;
             case "01":
             case "02":
             case "03":
@@ -179,8 +206,8 @@ public class Controller {
                     "아이스티(12) 딸기주스(14)    오렌지주스(15) 포도주스(16)\n" +
                     "이온음료(17) 아메리카노(18)   핫초코(19)    카페라뗴(20)");
             System.out.println("메뉴 선택으로 돌아가려면 \"0\"을 입력해 주세요.\n");
-            System.out.println("원하시는 음료의 번호를 입력해주세요.\n" +
-                    "> ");
+            System.out.println("원하시는 음료의 번호를 입력해주세요.");
+            System.out.print(">");
             try{
                 dCode = sc.next();
             }
@@ -200,8 +227,8 @@ public class Controller {
 
         errno = 0;
         while(!(errno == 1)) {
-            System.out.println("수량을 입력해주세요.\n" +
-                    "> ");
+            System.out.println("수량을 입력해주세요.");
+            System.out.print(">");
             try{
                 count = sc.nextInt();
             }
@@ -287,8 +314,8 @@ public class Controller {
         Scanner sc = new Scanner(System.in);
         while(true) {
             System.out.println("선결제 후 받은 인증코드를 입력해주세요\n" +
-                    "(메뉴 선택으로 돌아가려면 “0”를 입력해주세요)\n" +
-                    "> ");
+                    "(메뉴 선택으로 돌아가려면 “0”를 입력해주세요)\n");
+            System.out.print(">");
 
             try {
                 vCode = sc.next();
@@ -518,8 +545,8 @@ public class Controller {
         System.out.println("현재 자판기에서 판매할 7가지 음료의 번호를 차례로 입력해주세요");
         System.out.println("콜라(01) 사이다(02) 녹차(03) 홍차(04) 밀크티(05) 탄산수(06) 보리차(07) 캔커피(08) 물(09) 에너지드링크(10) " +
                 "바닷물(11) 식혜(12) 아이스티(13) 딸기주스(14) 오렌지주스(15) 포도주스(16) 이온음료(17) 아메리카노(18)" +
-                "핫초코(19) 카페라떼(20)\n");
-        System.out.println(">");
+                "핫초코(19) 카페라떼(20)");
+        System.out.print(">");
 
         while(true) {
             while(!scan.hasNextInt()) {
