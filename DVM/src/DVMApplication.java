@@ -37,9 +37,12 @@ public class DVMApplication {
 
         executorService.submit(()-> {
             while (true) {
+                Thread.sleep(100);
                 if (server.msgList.size() > 0) {
+                    System.out.println("msg received");
                     controller.receiveMsg(server.msgList.get(server.msgList.size() - 1));
-                    Thread.sleep(5000);
+                    Thread.sleep(1000);
+                    System.out.println("msg removed");
                     server.msgList.remove(server.msgList.size() - 1);
 
                 }
