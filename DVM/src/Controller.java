@@ -12,7 +12,7 @@ public class Controller {
     private int count;
     private DVM myDVM;
     private MessageManager myMessageManager;
-    ArrayList<Message> myMessage= new ArrayList<Message>();
+    private ArrayList<Message> myMessage= new ArrayList<Message>();
 
     Scanner scan=new Scanner(System.in);
 
