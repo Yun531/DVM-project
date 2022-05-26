@@ -57,7 +57,7 @@ public class Controller {
             }
         }
 
-
+        scan.nextLine();
         switch (mode) {
             case 1:
                 showSelectItemPage();
@@ -205,7 +205,7 @@ public class Controller {
                     "물(09)      에너지드링크(10) 바닷물(11)    식혜(12)\n" +
                     "아이스티(12) 딸기주스(14)    오렌지주스(15) 포도주스(16)\n" +
                     "이온음료(17) 아메리카노(18)   핫초코(19)    카페라뗴(20)");
-            System.out.println("메뉴 선택으로 돌아가려면 \"0\"을 입력해 주세요.\n");
+            System.out.println("(메뉴 선택으로 돌아가려면 \"0\"을 입력해 주세요.)\n");
             System.out.println("원하시는 음료의 번호를 입력해주세요.");
             System.out.print(">");
             try{
@@ -247,6 +247,7 @@ public class Controller {
             }
         }
 
+        scan.nextLine();
         if(myDVM.checkStock(Integer.parseInt(dCode), count)) {
             showPaymentPage(calculateTotalPrice());
         } else {
