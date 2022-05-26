@@ -235,7 +235,7 @@ public class Controller {
                 count = sc.nextInt();
             }
             catch(InputMismatchException ime) {
-                sc.nextLine();
+                sc.next();
                 System.out.println("잘못된 입력입니다. 정수만 입력해주세요.");
                 continue;
             }
@@ -341,7 +341,7 @@ public class Controller {
         } else {
             getOutDrink(myDVM.reqVerificationCodeItem(vCode));
         }
-        sc.close();
+        //sc.close();
     }
 
     public boolean isRightVerificationCode(String vCode){
