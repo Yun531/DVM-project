@@ -12,13 +12,12 @@ public class Controller {
     private int count;
     private DVM myDVM;
     private MessageManager myMessageManager;
-    ArrayList<Message> myMessage= new ArrayList<Message>();
+    private ArrayList<Message> myMessage= new ArrayList<Message>();
 
     Scanner scan=new Scanner(System.in);
 
     public void showMenu() {
         int mode;
-        Scanner sc = new Scanner(System.in);
 
         while (true) {
             try {
@@ -27,10 +26,10 @@ public class Controller {
                         "2. 인증코드 입력\n" +
                         "3. 관리자 모드");
                 System.out.print(">");
-                mode = sc.nextInt();
+                mode = scan.nextInt();
                 break;
             } catch (InputMismatchException ime) {
-                sc.next();
+                scan.next();
                 System.out.println("잘못된 입력입니다. 정수만 입력해주세요.");
             }
         }
@@ -44,10 +43,10 @@ public class Controller {
             System.out.print(">");
             while (true) {
                 try {
-                    mode = sc.nextInt();
+                    mode = scan.nextInt();
                     break;
                 } catch (InputMismatchException ime) {
-                    sc.next();
+                    scan.next();
                     System.out.println("잘못된 입력입니다. 정수만 입력해주세요.");
                     System.out.println("원하시는 메뉴의 번호를 입력해주세요.\n" +
                             "1. 음료 선택\n" +
@@ -57,8 +56,8 @@ public class Controller {
                 }
             }
         }
-        //sc.close();
 
+        scan.nextLine();
         switch (mode) {
             case 1:
                 showSelectItemPage();
@@ -199,7 +198,6 @@ public class Controller {
 
     public void showSelectItemPage() {
         int errno = 0;
-        Scanner sc = new Scanner(System.in);
 
         while(!(errno == 1)) {
             System.out.println("콜라(01)     사이다(02)     녹차(03)      홍차(04)\n" +
@@ -207,11 +205,11 @@ public class Controller {
                     "물(09)      에너지드링크(10) 바닷물(11)    식혜(12)\n" +
                     "아이스티(12) 딸기주스(14)    오렌지주스(15) 포도주스(16)\n" +
                     "이온음료(17) 아메리카노(18)   핫초코(19)    카페라뗴(20)");
-            System.out.println("메뉴 선택으로 돌아가려면 \"0\"을 입력해 주세요.\n");
+            System.out.println("(메뉴 선택으로 돌아가려면 \"0\"을 입력해 주세요.)\n");
             System.out.println("원하시는 음료의 번호를 입력해주세요.");
             System.out.print(">");
             try{
-                dCode = sc.next();
+                dCode = scan.next();
             }
             catch(InputMismatchException ime) {
                 System.out.println("잘못된 입력입니다.");
@@ -232,10 +230,10 @@ public class Controller {
             System.out.println("수량을 입력해주세요.");
             System.out.print(">");
             try{
-                count = sc.nextInt();
+                count = scan.nextInt();
             }
             catch(InputMismatchException ime) {
-                sc.nextLine();
+                scan.next();
                 System.out.println("잘못된 입력입니다. 정수만 입력해주세요.");
                 continue;
             }
@@ -249,6 +247,7 @@ public class Controller {
             }
         }
 
+        scan.nextLine();
         if(myDVM.checkStock(Integer.parseInt(dCode), count)) {
             showPaymentPage(calculateTotalPrice());
         } else {
@@ -302,7 +301,7 @@ public class Controller {
         Random random = new Random();
 
         String vCode = random.ints(leftLimit,rightLimit + 1)
-                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .filter(i -> (i <= 57 || i >= 97))
                 .limit(targetStringLength)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
@@ -313,14 +312,13 @@ public class Controller {
         String vCode = "입력오류";
         boolean vCodeTR = false;
 
-        Scanner sc = new Scanner(System.in);
         while(true) {
             System.out.println("선결제 후 받은 인증코드를 입력해주세요\n" +
                     "(메뉴 선택으로 돌아가려면 “0”를 입력해주세요)\n");
             System.out.print(">");
 
             try {
-                vCode = sc.next();
+                vCode = scan.next();
             } catch(InputMismatchException ime) {
                 System.out.println("잘못된 입력입니다.");
                 continue;
@@ -341,7 +339,6 @@ public class Controller {
         } else {
             getOutDrink(myDVM.reqVerificationCodeItem(vCode));
         }
-        sc.close();
     }
 
     public boolean isRightVerificationCode(String vCode){
