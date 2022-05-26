@@ -506,9 +506,9 @@ public class Controller {
             }
             else {
                 if(i >= 0 && i <= 8)
-                    System.out.println("0" + (i+1) + "\t\t\t" + myItem[i].getName() + "\t\t\t");
+                    System.out.println("0" + (i+1) + "\t\t\t\t\t\t\t\t"+"o"+"\t\t\t" + myItem[i].getName() + "\t\t\t");
                 else
-                    System.out.println((i+1) + "\t\t\t" + myItem[i].getName() + "\t\t\t");
+                    System.out.println((i+1) + "\t\t\t\t\t\t\t\t"+"o"+"\t\t\t" + myItem[i].getName() + "\t\t\t");
                 System.out.print(">");
 
                 int price = 0;
