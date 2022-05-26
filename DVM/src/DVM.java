@@ -16,6 +16,8 @@ public class DVM {
         }
         this.id = "Team4";
         this.adminPassword = "1q2w3e4r";
+        vCodeList.add("1q2w3e4r5t");
+        prepayItemList.add("302");
     }
 
     public String getId(){
