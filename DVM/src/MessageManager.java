@@ -7,7 +7,7 @@ public class MessageManager {
     public MessageManager() {}
 
     private Serializer mySerializer = new Serializer();
-    String host = "localhost";
+    String host = "1.235.230.3";
 
     public void sendResMsg(String type, String dCode, int count, String dstId, Location myLocation) {
         // (dstsrc) type: "StockCheckResponse" == 재고확인응답
@@ -57,7 +57,7 @@ public class MessageManager {
         String jsonMsg = mySerializer.message2Json(message);
 
         try {
-            DVMClient myDVMClient = new DVMClient("host", jsonMsg);
+            DVMClient myDVMClient = new DVMClient("1.235.230.3", jsonMsg);
             // Todo: host 대신 수신측 ip 세팅해야 함
             myDVMClient.run();
         } catch (Exception exception) {
@@ -86,7 +86,7 @@ public class MessageManager {
         System.out.println(jsonMsg);
 
         try {
-            DVMClient myDVMClient = new DVMClient("host", jsonMsg);
+            DVMClient myDVMClient = new DVMClient("1.235.230.3", jsonMsg);
             // Todo: host 대신 수신측 ip 세팅해야 함
             myDVMClient.run();
         } catch (Exception exception) {
@@ -114,7 +114,7 @@ public class MessageManager {
         String jsonMsg = mySerializer.message2Json(message);
 
         try {
-            DVMClient myDVMClient = new DVMClient("host", jsonMsg);
+            DVMClient myDVMClient = new DVMClient("1.235.230.3", jsonMsg);
             // Todo: host 대신 수신측 ip 세팅해야
             myDVMClient.run();
         } catch (Exception exception) {
