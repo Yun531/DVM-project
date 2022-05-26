@@ -12,7 +12,7 @@ public class Controller {
     private int count;
     private DVM myDVM;
     private MessageManager myMessageManager;
-    ArrayList<Message> myMessage= new ArrayList<Message>();
+    private ArrayList<Message> myMessage= new ArrayList<Message>();
 
     Scanner scan=new Scanner(System.in);
 
@@ -301,7 +301,7 @@ public class Controller {
         Random random = new Random();
 
         String vCode = random.ints(leftLimit,rightLimit + 1)
-                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .filter(i -> (i <= 57 || i >= 97))
                 .limit(targetStringLength)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
