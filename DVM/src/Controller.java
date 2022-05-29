@@ -12,24 +12,24 @@ public class Controller {
     private int count;
     private DVM myDVM;
     private MessageManager myMessageManager;
-    ArrayList<Message> myMessage= new ArrayList<Message>();
+    private ArrayList<Message> myMessage= new ArrayList<Message>();
 
     Scanner scan=new Scanner(System.in);
 
     public void showMenu() {
         int mode;
-        Scanner sc = new Scanner(System.in);
 
         while (true) {
             try {
                 System.out.println("\n원하시는 메뉴의 번호를 입력해주세요.\n" +
                         "1. 음료 선택\n" +
                         "2. 인증코드 입력\n" +
-                        "3. 관리자 모드\n" +
-                        "> ");
-                mode = sc.nextInt();
+                        "3. 관리자 모드");
+                System.out.print(">");
+                mode = scan.nextInt();
                 break;
             } catch (InputMismatchException ime) {
+                scan.next();
                 System.out.println("잘못된 입력입니다. 정수만 입력해주세요.");
             }
         }
@@ -39,24 +39,25 @@ public class Controller {
             System.out.println("원하시는 메뉴의 번호를 입력해주세요.\n" +
                     "1. 음료 선택\n" +
                     "2. 인증코드 입력\n" +
-                    "3. 관리자 모드" +
-                    "> ");
+                    "3. 관리자 모드");
+            System.out.print(">");
             while (true) {
                 try {
-                    mode = sc.nextInt();
+                    mode = scan.nextInt();
                     break;
                 } catch (InputMismatchException ime) {
+                    scan.next();
                     System.out.println("잘못된 입력입니다. 정수만 입력해주세요.");
                     System.out.println("원하시는 메뉴의 번호를 입력해주세요.\n" +
                             "1. 음료 선택\n" +
                             "2. 인증코드 입력\n" +
-                            "3. 관리자 모드" +
-                            "> ");
+                            "3. 관리자 모드");
+                    System.out.print(">");
                 }
             }
         }
-        //sc.close();
 
+        scan.nextLine();
         switch (mode) {
             case 1:
                 showSelectItemPage();
@@ -74,6 +75,33 @@ public class Controller {
         switch(dCode){
             case "0":
                 return 0;
+            case "1":
+                dCode = "01";
+                return 1;
+            case "2":
+                dCode = "02";
+                return 1;
+            case "3":
+                dCode = "03";
+                return 1;
+            case "4":
+                dCode = "04";
+                return 1;
+            case "5":
+                dCode = "05";
+                return 1;
+            case "6":
+                dCode = "06";
+                return 1;
+            case "7":
+                dCode = "07";
+                return 1;
+            case "8":
+                dCode = "08";
+                return 1;
+            case "9":
+                dCode = "09";
+                return 1;
             case "01":
             case "02":
             case "03":
@@ -170,7 +198,6 @@ public class Controller {
 
     public void showSelectItemPage() {
         int errno = 0;
-        Scanner sc = new Scanner(System.in);
 
         while(!(errno == 1)) {
             System.out.println("콜라(01)     사이다(02)     녹차(03)      홍차(04)\n" +
@@ -178,11 +205,11 @@ public class Controller {
                     "물(09)      에너지드링크(10) 바닷물(11)    식혜(12)\n" +
                     "아이스티(12) 딸기주스(14)    오렌지주스(15) 포도주스(16)\n" +
                     "이온음료(17) 아메리카노(18)   핫초코(19)    카페라뗴(20)");
-            System.out.println("메뉴 선택으로 돌아가려면 \"0\"을 입력해 주세요.\n");
-            System.out.println("원하시는 음료의 번호를 입력해주세요.\n" +
-                    "> ");
+            System.out.println("(메뉴 선택으로 돌아가려면 \"0\"을 입력해 주세요.)\n");
+            System.out.println("원하시는 음료의 번호를 입력해주세요.");
+            System.out.print(">");
             try{
-                dCode = sc.next();
+                dCode = scan.next();
             }
             catch(InputMismatchException ime) {
                 System.out.println("잘못된 입력입니다.");
@@ -200,13 +227,13 @@ public class Controller {
 
         errno = 0;
         while(!(errno == 1)) {
-            System.out.println("수량을 입력해주세요.\n" +
-                    "> ");
+            System.out.println("수량을 입력해주세요.");
+            System.out.print(">");
             try{
-                count = sc.nextInt();
+                count = scan.nextInt();
             }
             catch(InputMismatchException ime) {
-                sc.nextLine();
+                scan.next();
                 System.out.println("잘못된 입력입니다. 정수만 입력해주세요.");
                 continue;
             }
@@ -220,6 +247,7 @@ public class Controller {
             }
         }
 
+        scan.nextLine();
         if(myDVM.checkStock(Integer.parseInt(dCode), count)) {
             showPaymentPage(calculateTotalPrice());
         } else {
@@ -273,7 +301,7 @@ public class Controller {
         Random random = new Random();
 
         String vCode = random.ints(leftLimit,rightLimit + 1)
-                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .filter(i -> (i <= 57 || i >= 97))
                 .limit(targetStringLength)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
@@ -284,14 +312,13 @@ public class Controller {
         String vCode = "입력오류";
         boolean vCodeTR = false;
 
-        Scanner sc = new Scanner(System.in);
         while(true) {
             System.out.println("선결제 후 받은 인증코드를 입력해주세요\n" +
-                    "(메뉴 선택으로 돌아가려면 “0”를 입력해주세요)\n" +
-                    "> ");
+                    "(메뉴 선택으로 돌아가려면 “0”를 입력해주세요)\n");
+            System.out.print(">");
 
             try {
-                vCode = sc.next();
+                vCode = scan.next();
             } catch(InputMismatchException ime) {
                 System.out.println("잘못된 입력입니다.");
                 continue;
@@ -312,7 +339,6 @@ public class Controller {
         } else {
             getOutDrink(myDVM.reqVerificationCodeItem(vCode));
         }
-        sc.close();
     }
 
     public boolean isRightVerificationCode(String vCode){
@@ -344,17 +370,18 @@ public class Controller {
     public void showAdminPasswordPage() {
         int menu;
 
-        System.out.println("<관리자 모드>");
-        System.out.println("원하는 작업의 번호를 선택해주세요.");
-        System.out.println("(메뉴 선택으로 돌아가려면 \"0\"을 입력해주세요.");
-
-        System.out.println("1. DVM 정보 관리");
-        System.out.println("2. 음료 정보 관리");
-        System.out.println("3. 음료 세팅");
-
-        System.out.print(">");
-
         while(true) {
+
+            System.out.println("<관리자 모드>");
+            System.out.println("원하는 작업의 번호를 선택해주세요.");
+            System.out.println("(메뉴 선택으로 돌아가려면 \"0\"을 입력해주세요.)");
+
+            System.out.println("1. DVM 정보 관리");
+            System.out.println("2. 음료 정보 관리");
+            System.out.println("3. 음료 세팅");
+
+            System.out.print(">");
+
             while(!scan.hasNextInt()) {
                 scan.next();
                 System.out.println("정확한 번호만 입력하세요");
@@ -366,8 +393,10 @@ public class Controller {
                 setDrinkInfo();
             else if(menu == 3)
                 setDrinkKinds();
-            else if(menu == 0)
+            else if(menu == 0) {
+                scan.nextLine();
                 return; //showMenu로 돌아감
+            }
             else {
                 System.out.println("번호는 0~3만 입력하세요");
             }
@@ -386,14 +415,17 @@ public class Controller {
         String adminPassword;
         boolean check;
 
-        System.out.println("Admin password를 입력해 주세요");
-        System.out.println("(메뉴 선택으로 돌아가려면 \"0\"을 입력해주세요.");
-        System.out.print(">");
+
 
         while(true) {
+            System.out.println("Admin password를 입력해 주세요");
+            System.out.println("(메뉴 선택으로 돌아가려면 \"0\"을 입력해주세요.)");
+            System.out.print(">");
+
             adminPassword = scan.nextLine();
-            if(adminPassword.equals("0"))
+            if(adminPassword.equals("0")) {
                 return; //showMenu로 돌아감
+            }
             else {
                 check = checkAdminPassword(adminPassword);
                 if (check) {
@@ -416,10 +448,11 @@ public class Controller {
         System.out.println("<DVM 정보 관리>");
         System.out.println("id 입력 후 tab을 눌러 좌표를 입력하세요\n");
         System.out.println("id  좌표");
-        System.out.println("Team4   10 20");
-        System.out.print(">");
+        System.out.println("EX: Team4   10 20");
+
 
         while(true) {
+            System.out.print(">");
             inputId = scan.next();
             if(inputId.equals(name)) {
                 break;
@@ -462,20 +495,20 @@ public class Controller {
         System.out.println("<음료 정보 관리>");
         System.out.println("음료 정보 관리 시 tab을 눌러 다음 정보를 입력 후");
         System.out.println("enter를 눌러 다음 음료를 입력하세요.\n");
-        System.out.println("음료코드\t음료 이름\t가격\t재고\t판매여부");
+        System.out.println("음료코드\t\t가격\t\t\t재고\t\t판매여부\t\t음료이름");
 
-        for(int i=1;i<myItem.length;i++) {
+        for(int i=0;i<myItem.length;i++) {
             if(myItem[i].getStock()==-1) {
-                if(i >= 1 && i <= 9)
-                    System.out.println("0" + i + "\t" + myItem[i].getName() + "\t" + myItem[i].getPrice() + "\t" + "_" + "\t" + "X");
+                if(i >= 0 && i <= 8)
+                    System.out.println("0" + (i+1) + "\t\t\t" + myItem[i].getPrice() + "\t\t" + "_" + "\t\t" + "X"+ "\t\t\t" + myItem[i].getName() );
                 else
-                    System.out.println(i + "\t" + myItem[i].getName() + "\t" + myItem[i].getPrice() + "\t" + "_" + "\t" + "X");
+                    System.out.println((i+1)  + "\t\t\t" + myItem[i].getPrice() + "\t\t" + "_" + "\t\t" + "X"+ "\t\t\t" + myItem[i].getName());
             }
             else {
-                if(i >= 1 && i <= 9)
-                    System.out.println("0" + i + "\t" + myItem[i].getName() + "\t");
+                if(i >= 0 && i <= 8)
+                    System.out.println("0" + (i+1) +"\t\t\t"+myItem[i].getPrice()+"\t\t"+myItem[i].getStock()+ "\t\t"+"o"+"\t\t\t" + myItem[i].getName() + "\t\t\t");
                 else
-                    System.out.println(i + "\t" + myItem[i].getName() + "\t");
+                    System.out.println((i+1) + "\t\t\t"+myItem[i].getPrice()+"\t\t"+myItem[i].getStock()+"\t\t"+"o"+"\t\t\t" + myItem[i].getName() + "\t\t\t");
                 System.out.print(">");
 
                 int price = 0;
@@ -503,7 +536,7 @@ public class Controller {
                         }
                     }
                 }
-                myDVM.saveDrinkInfo(i, price, stock, myItem[i].getName());
+                myDVM.saveDrinkInfo(i+1, price, stock, myItem[i].getName());
                 scan.nextLine();
             }
         }
@@ -515,23 +548,39 @@ public class Controller {
         int[] dCodeArr = new int[7];
 
         System.out.println("<음료 세팅>");
-        System.out.println("현재 자판기에서 판매할 7가지 음료의 번호를 차례로 입력해주세요");
-        System.out.println("콜라(01) 사이다(02) 녹차(03) 홍차(04) 밀크티(05) 탄산수(06) 보리차(07) 캔커피(08) 물(09) 에너지드링크(10) " +
-                "바닷물(11) 식혜(12) 아이스티(13) 딸기주스(14) 오렌지주스(15) 포도주스(16) 이온음료(17) 아메리카노(18)" +
-                "핫초코(19) 카페라떼(20)\n");
-        System.out.println(">");
+        System.out.println("현재 자판기에서 판매할 7가지 음료의 번호를 입력하고 enter를 눌러주세요");
+        System.out.println("콜라(01)     사이다(02)     녹차(03)      홍차(04)\n" +
+                "밀크티(05)   탄산수(06)     보리차(07)     캔커피(08)\n" +
+                "물(09)      에너지드링크(10) 바닷물(11)    식혜(12)\n" +
+                "아이스티(12) 딸기주스(14)    오렌지주스(15) 포도주스(16)\n" +
+                "이온음료(17) 아메리카노(18)   핫초코(19)    카페라뗴(20)");
 
         while(true) {
+            System.out.print(">");
             while(!scan.hasNextInt()) {
                 scan.next();
                 System.out.println("정확한 번호만 입력하세요");
             }
             drinkCode=scan.nextInt();
+
             if(drinkCode >= 1 && drinkCode <= 20) {
+
                 dCodeArr[count] = drinkCode;
                 count++;
-                if(count == 7)
+
+                for(int i=0;i<count-1;i++)
+                {
+                    if(dCodeArr[i]==drinkCode){
+                        count--;
+                        System.out.println("같은 음료가 이미 세팅되어 있습니다.");
+                        break;
+                    }
+                }
+
+                if(count == 7) {
+                    scan.nextLine();
                     break;
+                }
             }
             else {
                 System.out.println("번호는 01~20만 입력하세요");
@@ -542,15 +591,18 @@ public class Controller {
 
     public void receiveMsg(Message msg) {  //myDVM.checkStock() 구현 봐야 함
         String msgType = msg.getMsgType();
-        dCode = msg.getMsgDescription().getItemCode();
-        count = msg.getMsgDescription().getItemNum();
+
         switch(msgType){
             case "StockCheckRequest":
+                dCode = msg.getMsgDescription().getItemCode();
+                count = msg.getMsgDescription().getItemNum();
                 if(myDVM.checkStock(Integer.parseInt(dCode), count)) {
                     myMessageManager.sendResMsg("StockCheckResponse", dCode, count, myDVM.getId(), myDVM.getLocation());
                 }
                 break;
             case "SalesCheckRequest":
+                dCode = msg.getMsgDescription().getItemCode();
+                count = msg.getMsgDescription().getItemNum();
                 if(myDVM.checkStock(Integer.parseInt(dCode), count)){
                     if(myDVM.updateStock(Integer.parseInt(dCode), count)){
                         myMessageManager.sendResMsg("SalesCheckResponse", dCode, myDVM.getId(), myDVM.getLocation());
@@ -558,6 +610,7 @@ public class Controller {
                 }
                 break;
             case "PrepaymentCheck":
+                dCode = msg.getMsgDescription().getItemCode();
                 myDVM.saveVerificationCode(msg.getMsgDescription().getAuthCode(), Integer.parseInt(dCode), count);
                 break;
             case "StockCheckResponse":
@@ -567,9 +620,9 @@ public class Controller {
         }
     }
 
-    public void getOutDrink(int temp) {
-        int dCode_ = temp % 100;
-        int count_ = temp / 100;
+    public void getOutDrink(int Calc) {
+        int dCode_ = Calc % 100;
+        int count_ = Calc / 100;
 
         Item item = myDVM.getItemList()[dCode_ -1];
 
