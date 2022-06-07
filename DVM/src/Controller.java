@@ -4,8 +4,11 @@ import Model.Message;
 public class Controller {
 
     public Controller() {
-        myDVM = new DVM();
-        myMessageManager = new MessageManager();
+        myDVM = DVM.getInstance();
+        myMessageManager = MessageManager.getInstance();
+        paymentPage = new PaymentPage();
+        prePaymentPage = new PrePaymentPage();
+        verificationCodeMenu = new VerificationCodeMenu();
     }
 
     private String dCode;
@@ -13,8 +16,13 @@ public class Controller {
     private DVM myDVM;
     private MessageManager myMessageManager;
     private ArrayList<Message> myMessage= new ArrayList<Message>();
+    private String dstID = "team4";
+    private PaymentPage paymentPage;
+    private PrePaymentPage prePaymentPage;
+    private VerificationCodeMenu verificationCodeMenu;
 
     Scanner scan=new Scanner(System.in);
+
 
     public void showMenu() {
         int mode;
@@ -182,8 +190,9 @@ public class Controller {
 
         }
 
+        dstID = tempID;
 
-        return returnLoc;
+         return returnLoc;
     }
 
     public boolean showOtherDVM(Location otherDVM) {
@@ -249,24 +258,47 @@ public class Controller {
 
         scan.nextLine();
         if(myDVM.checkStock(Integer.parseInt(dCode), count)) {
-            showPaymentPage(calculateTotalPrice());
+            paymentPage.pay(dCode, count, calculateTotalPrice(), "0");
         } else {
-            if(showOtherDVM(getClosestDVM())) {
-                showPaymentPage(calculateTotalPrice());
 
-                String UserVCode;
+            if(showOtherDVM(getClosestDVM())) {
+                System.out.print("안내된 DVM에서 선결제를 진행하시겠습니까?\n" +
+                        "(1: 선결제 진행, 나머지 정수: 진행 취소\n" +
+                        ">");
+                int mode;
+                while (true) {
+                    try {
+                        mode = scan.nextInt();
+                        break;
+                    } catch (InputMismatchException ime) {
+                        scan.next();
+                        System.out.println("잘못된 입력입니다. 정수만 입력해주세요.");
+                        System.out.print("안내된 DVM에서 선결제를 진행하시겠습니까?\n" +
+                                "(1: 선결제 진행, 나머지 정수: 진행 취소\n" +
+                                ">");
+                    }
+                }
+                scan.nextLine();
+                if(mode == 1) {
+                    prePaymentPage.pay(dCode, count, calculateTotalPrice(), dstID);
+                }
+                else{
+                    System.out.println("선결제를 진행하지 않고, 메뉴 선택으로 돌아갑니다.");
+                }
+            }
+            /*    String UserVCode;
                 UserVCode = createVerificationCode();
-                myMessageManager.sendReqMsg("PrepaymentCheck", dCode, count, UserVCode);
+                myMessageManager.sendReqMsg("PrepaymentCheck", dCode, count, UserVCode, dstID);
                 System.out.println("선결제가 완료되었습니다.\n" +
                         "인증코드: " + UserVCode);
-            }
+            }*/
             else{
                 System.out.println("해당 음료에 대한 재고를 보유한 DVM이 존재하지 않습니다.");
             }
         }
     }
 
-    public void showPaymentPage(int totalPrice) {
+    /*public void showPaymentPage(int totalPrice) {
         String cardInfo;
         boolean check;
 
@@ -292,24 +324,12 @@ public class Controller {
                 return; //showMenu로 돌아감
             }
         }
-    }
+    }*/
 
-    public String createVerificationCode() {
-        int leftLimit = 48; // numeral '0'
-        int rightLimit = 122; // letter 'z'
-        int targetStringLength = 10;
-        Random random = new Random();
-
-        String vCode = random.ints(leftLimit,rightLimit + 1)
-                .filter(i -> (i <= 57 || i >= 97))
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
-        return vCode;
-    }
 
     public void showVerificationCodeMenu() {
-        String vCode = "입력오류";
+        verificationCodeMenu.pay("1", 0, 0, "0");
+        /*String vCode = "입력오류";
         boolean vCodeTR = false;
 
         while(true) {
@@ -338,34 +358,9 @@ public class Controller {
             System.out.println("유효하지 않은 인증코드입니다.");
         } else {
             getOutDrink(myDVM.reqVerificationCodeItem(vCode));
-        }
+        }*/
     }
 
-    public boolean isRightVerificationCode(String vCode){
-        boolean vCodeTR = false;
-        boolean numberFlag = false, letterFlag = false;
-        char chrInput;
-
-        if(vCode.equals("0")){
-            return true;
-        }
-        else if(vCode.length() == 10){
-            for(int i = 0; i < vCode.length(); i++){
-                chrInput = vCode.charAt(i);
-                if (chrInput >= 0x61 && chrInput <= 0x7A) {
-                    letterFlag = true;
-                } else if (chrInput >= 0x30 && chrInput <= 0x39) {
-                    numberFlag = true;
-                } else{
-                    break;
-                }
-                if((i + 1 == vCode.length()) && (numberFlag && letterFlag)) {
-                    vCodeTR = true;
-                }
-            }
-        }
-        return vCodeTR;
-    }
 
     public void showAdminPasswordPage() {
         int menu;

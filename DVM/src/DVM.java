@@ -1,5 +1,9 @@
 import java.util.LinkedList;
 
+/**
+ * about my DVM
+ * - my DVM 기본정보, item list, 인증코드 등 보관.
+ */
 public class DVM {
     private String id;
     private Location location;
@@ -7,17 +11,30 @@ public class DVM {
     private LinkedList<String> vCodeList = new LinkedList<String>();
     private LinkedList<String> prepayItemList = new LinkedList<String>();
     private String adminPassword;
+    private static DVM uniqueDVM;
 
-    public DVM() {
+    private DVM() {
         this.location = new Location(0,0);
         this.itemList = new Item[20];
-        for(int i = 0; i < 20 ; ++i){
+
+        for(int i = 0; i < 20 ; ++i) {
             this.itemList[i] = new Item(i);
         }
+
         this.id = "Team4";
         this.adminPassword = "1q2w3e4r";
-        vCodeList.add("1q2w3e4r5t"); vCodeList.add("q1w2e3r4t5"); vCodeList.add("qwert12345");
-        prepayItemList.add("302"); prepayItemList.add("1213"); prepayItemList.add("105");
+        vCodeList.add("1q2w3e4r5t");
+        vCodeList.add("q1w2e3r4t5");
+        vCodeList.add("qwert12345");
+        prepayItemList.add("302");
+        prepayItemList.add("1213");
+        prepayItemList.add("105");
+    }
+
+    public static DVM getInstance() {
+        if(uniqueDVM == null)
+            uniqueDVM = new DVM();
+        return uniqueDVM;
     }
 
     public String getId(){
@@ -60,8 +77,8 @@ public class DVM {
         vCodeList.remove(index);
         String temp = prepayItemList.get(index);
         int Calc = Integer.parseInt(temp);
-        int dCode = Calc%100;
-        int Count = Calc/100;
+        int dCode = Calc % 100;
+        int Count = Calc / 100;
         // getOutDrink 가 dCode랑 Count 정보를 필요로 할 것 같은데..?
         return Calc; //int dCode = Calc%100, int Count = Calc/100
     }
@@ -89,7 +106,7 @@ public class DVM {
         boolean[] temp = new boolean[20];
 
         for (int i = 0; i < 7 ; ++i) {
-            temp[dCode[i]-1] = true;
+            temp[dCode[i] - 1] = true;
         }
 
         for (int i = 0; i < 20 ; ++i) {

@@ -30,7 +30,7 @@ public class DVMApplication {
         Thread.sleep(5000);
         System.out.println("waiting ...");
 
-        MessageManager messageManager = new MessageManager();
+        MessageManager messageManager = MessageManager.getInstance();
 
 
         ExecutorService executorService = Executors.newCachedThreadPool();
