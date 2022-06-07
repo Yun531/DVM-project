@@ -7,7 +7,7 @@ public class MessageManager {
     public MessageManager() {}
 
     private Serializer mySerializer = new Serializer();
-    String host = "1.235.230.3";
+//    String host = "localhost";
 
     public void sendResMsg(String type, String dCode, int count, String dstId, Location myLocation) {
         // (dstsrc) type: "StockCheckResponse" == 재고확인응답
@@ -29,8 +29,7 @@ public class MessageManager {
         String jsonMsg = mySerializer.message2Json(message);
 
         try {
-            DVMClient myDVMClient = new DVMClient(host, jsonMsg);
-            // Todo: host 대신 수신측 ip 세팅해야 함
+            DVMClient myDVMClient = new DVMClient(setDVMIp(dstId), jsonMsg);
             myDVMClient.run();
         } catch (Exception exception) {
             System.out.println("request 실패");
@@ -57,8 +56,7 @@ public class MessageManager {
         String jsonMsg = mySerializer.message2Json(message);
 
         try {
-            DVMClient myDVMClient = new DVMClient("1.235.230.3", jsonMsg);
-            // Todo: host 대신 수신측 ip 세팅해야 함
+            DVMClient myDVMClient = new DVMClient(setDVMIp(dstId), jsonMsg);
             myDVMClient.run();
         } catch (Exception exception) {
             System.out.println("request 실패");
@@ -77,7 +75,6 @@ public class MessageManager {
         Message.MessageDescription messageDescription = new Message.MessageDescription();
         messageDescription.setItemCode(dCode);
         messageDescription.setItemNum(count);
-        // Todo: 수신측 좌표 (x, y) 세팅? broadcast 어떻게
         messageDescription.setAuthCode("");
         message.setMsgDescription(messageDescription);
 
@@ -86,27 +83,33 @@ public class MessageManager {
         System.out.println(jsonMsg);
 
         try {
-            DVMClient myDVMClient = new DVMClient("1.235.230.3", jsonMsg);
-            // Todo: host 대신 수신측 ip 세팅해야 함
-            myDVMClient.run();
+            DVMClient myDVMClient1 = new DVMClient("Team1", jsonMsg);
+            DVMClient myDVMClient2 = new DVMClient("Team2", jsonMsg);
+            DVMClient myDVMClient3 = new DVMClient("Team3", jsonMsg);
+            DVMClient myDVMClient5 = new DVMClient("Team5", jsonMsg);
+            DVMClient myDVMClient6 = new DVMClient("Team6", jsonMsg);
+            myDVMClient1.run();
+            myDVMClient2.run();
+            myDVMClient3.run();
+            myDVMClient5.run();
+            myDVMClient6.run();
         } catch (Exception exception) {
             System.out.println("request 실패");
         }
-
     }
 
-    public void sendReqMsg(String type, String dCode, int count, String vCode) {
+    // dstId 인자 추가했음
+    public void sendReqMsg(String type, String dCode, int count, String vCode, String dstId) {
         // (srcdst) type: "PrepaymentCheck" == 선결제확인
 
         // 1. raw --> Message
         Message message = new Message();
         message.setSrcId("Team4");
-        // Todo: 수신측 id 세팅
+        message.setDstID(dstId);
         message.setMsgType(type);
         Message.MessageDescription messageDescription = new Message.MessageDescription();
         messageDescription.setItemCode(dCode);
         messageDescription.setItemNum(count);
-        // Todo: 수신측 좌표 (x, y) 세팅?
         messageDescription.setAuthCode(vCode);
         message.setMsgDescription(messageDescription);
 
@@ -114,11 +117,30 @@ public class MessageManager {
         String jsonMsg = mySerializer.message2Json(message);
 
         try {
-            DVMClient myDVMClient = new DVMClient("1.235.230.3", jsonMsg);
-            // Todo: host 대신 수신측 ip 세팅해야
+            DVMClient myDVMClient = new DVMClient(setDVMIp(dstId), jsonMsg);
             myDVMClient.run();
         } catch (Exception exception) {
             System.out.println("request 실패");
         }
+    }
+
+    public String setDVMIp(String teamId) {
+        String ip;
+        switch (teamId) {
+            case "Team1":
+                ip = "192";
+            case "Team2":
+                ip = "192";
+            case "Team3":
+                ip = "192";
+            case "Team5":
+                ip = "192";
+            case "Team6":
+                ip = "192";
+            default:
+                System.out.println("dst dvm의 Team Id가 잘못 설정되어 있습니다.");
+                ip = "";
+        }
+        return ip;
     }
 }
