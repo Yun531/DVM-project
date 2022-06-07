@@ -1,6 +1,11 @@
 import java.util.*;
 import Model.Message;
 
+/**
+ * about almost function
+ * - CLI 화면 출력
+ * - 대부분의 기능 담당.
+ */
 public class Controller {
 
     public Controller() {
@@ -9,6 +14,7 @@ public class Controller {
         paymentPage = new PaymentPage();
         prePaymentPage = new PrePaymentPage();
         verificationCodeMenu = new VerificationCodeMenu();
+
     }
 
     private String dCode;
@@ -192,7 +198,7 @@ public class Controller {
 
         dstID = tempID;
 
-         return returnLoc;
+        return returnLoc;
     }
 
     public boolean showOtherDVM(Location otherDVM) {
@@ -309,7 +315,7 @@ public class Controller {
 
         cardInfo=scan.nextLine();
         if(cardInfo.equals("0"))
-            return; //showMenu로 돌아감
+            return; //showMenu 로 돌아감
         else {
             check = CardCompany.isValidCard(cardInfo,totalPrice);
             if (check) {
@@ -501,9 +507,9 @@ public class Controller {
             }
             else {
                 if(i >= 0 && i <= 8)
-                    System.out.println("0" + (i+1) + "\t\t\t" + myItem[i].getName() + "\t\t\t");
+                    System.out.println("0" + (i+1) +"\t\t\t"+myItem[i].getPrice()+"\t\t"+myItem[i].getStock()+ "\t\t"+"o"+"\t\t\t" + myItem[i].getName() + "\t\t\t");
                 else
-                    System.out.println((i+1) + "\t\t\t" + myItem[i].getName() + "\t\t\t");
+                    System.out.println((i+1) + "\t\t\t"+myItem[i].getPrice()+"\t\t"+myItem[i].getStock()+"\t\t"+"o"+"\t\t\t" + myItem[i].getName() + "\t\t\t");
                 System.out.print(">");
 
                 int price = 0;
@@ -586,15 +592,18 @@ public class Controller {
 
     public void receiveMsg(Message msg) {  //myDVM.checkStock() 구현 봐야 함
         String msgType = msg.getMsgType();
-        dCode = msg.getMsgDescription().getItemCode();
-        count = msg.getMsgDescription().getItemNum();
+
         switch(msgType){
             case "StockCheckRequest":
+                dCode = msg.getMsgDescription().getItemCode();
+                count = msg.getMsgDescription().getItemNum();
                 if(myDVM.checkStock(Integer.parseInt(dCode), count)) {
                     myMessageManager.sendResMsg("StockCheckResponse", dCode, count, myDVM.getId(), myDVM.getLocation());
                 }
                 break;
             case "SalesCheckRequest":
+                dCode = msg.getMsgDescription().getItemCode();
+                count = msg.getMsgDescription().getItemNum();
                 if(myDVM.checkStock(Integer.parseInt(dCode), count)){
                     if(myDVM.updateStock(Integer.parseInt(dCode), count)){
                         myMessageManager.sendResMsg("SalesCheckResponse", dCode, myDVM.getId(), myDVM.getLocation());
@@ -602,6 +611,7 @@ public class Controller {
                 }
                 break;
             case "PrepaymentCheck":
+                dCode = msg.getMsgDescription().getItemCode();
                 myDVM.saveVerificationCode(msg.getMsgDescription().getAuthCode(), Integer.parseInt(dCode), count);
                 break;
             case "StockCheckResponse":

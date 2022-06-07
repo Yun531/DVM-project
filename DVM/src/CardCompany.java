@@ -1,5 +1,10 @@
+/**
+ * about CARD COMPANY
+ * - 카드 보관
+ * - 카드 유효성(유효한 카드인지, 잔액 충분한지) 검사
+ * - 환불.
+ */
 public class CardCompany {
-
     public CardCompany() {
     }
 
@@ -42,7 +47,7 @@ public class CardCompany {
             }
         }
 
-        temp=cardList[i].getBalance() - totalPrice;
+        temp = cardList[i].getBalance() - totalPrice;
         if(temp >= 0) {
             cardList[i].setBalance(temp);
         }
@@ -60,6 +65,6 @@ public class CardCompany {
             }
         }
         cardList[i].setBalance(cardList[i].getBalance() + totalPrice);
-        return ;
+        return;
     }
 }

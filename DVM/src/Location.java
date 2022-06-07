@@ -1,3 +1,7 @@
+/**
+ * about DVM's location
+ * - 좌표값 getter, setter.
+ */
 public class Location {
     private int x;
     private int y;
@@ -6,6 +10,7 @@ public class Location {
         this.x = 0;
         this.y = 0;
     }
+
     public Location(int x, int y) {
         this.x = x;
         this.y = y;
