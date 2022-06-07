@@ -16,6 +16,8 @@ public class DVM {
     private DVM() {
         this.location = new Location(0,0);
         this.itemList = new Item[20];
+        vCodeList.add("qwert12345");
+        prepayItemList.add("308");
 
         for(int i = 0; i < 20 ; ++i) {
             this.itemList[i] = new Item(i);
