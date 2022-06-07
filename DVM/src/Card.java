@@ -1,3 +1,7 @@
+/**
+ * about CARD
+ * 카드 정보(번호, 잔액) 조회.
+ */
 public class Card {
     private String information;
     private int balance;

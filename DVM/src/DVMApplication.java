@@ -2,6 +2,9 @@ import DVM_Server.DVMServer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * about SERVER.
+ */
 class MyDVMServer implements Runnable {
     DVMServer server;
 
@@ -20,6 +23,9 @@ class MyDVMServer implements Runnable {
     }
 }
 
+/**
+ * main APP.
+ */
 public class DVMApplication {
     public static void main(String[] args) throws InterruptedException {
         DVMServer server = new DVMServer();
@@ -32,7 +38,6 @@ public class DVMApplication {
 
         MessageManager messageManager = new MessageManager();
 
-
         ExecutorService executorService = Executors.newCachedThreadPool();
 
         executorService.submit(()-> {
@@ -44,7 +49,6 @@ public class DVMApplication {
                     Thread.sleep(1000);
                     System.out.println("msg removed");
                     server.msgList.remove(server.msgList.size() - 1);
-
                 }
             }
         });
@@ -53,9 +57,4 @@ public class DVMApplication {
             controller.showMenu();
         }
     }
-
-    // Message example
-    // {"srcId":"4","dstID":"3","msgType":"StockCheckResponse","msgDescription":{"itemCode":"10","itemNum":0,"dvmXCoord":55,"dvmYCoord":555,"authCode":""}}
-    // {"srcId":"4","dstID":"2","msgType":"SalesCheckResponse","msgDescription":{"itemCode":"9","itemNum":1,"dvmXCoord":55,"dvmYCoord":555,"authCode":""}}
-    // {"srcId":"4","dstID":"0","msgType":"StockCheckRequest","msgDescription":{"itemCode":"10","itemNum":5,"dvmXCoord":0,"dvmYCoord":0,"authCode":""}}
 }

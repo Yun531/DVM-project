@@ -1,6 +1,11 @@
 import java.util.*;
 import Model.Message;
 
+/**
+ * about almost function
+ * - CLI 화면 출력
+ * - 대부분의 기능 담당.
+ */
 public class Controller {
 
     public Controller() {
@@ -277,7 +282,7 @@ public class Controller {
 
         cardInfo=scan.nextLine();
         if(cardInfo.equals("0"))
-            return; //showMenu로 돌아감
+            return; //showMenu 로 돌아감
         else {
             check = CardCompany.isValidCard(cardInfo,totalPrice);
             if (check) {

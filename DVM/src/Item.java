@@ -1,3 +1,7 @@
+/**
+ * about ITEM (drinks)
+ * - item 이름, 가격, 재고 관리.
+ */
 public class Item {
     private int code;
     private String name;
@@ -7,66 +11,48 @@ public class Item {
     public Item(int code) {
         this.code = code + 1;
         switch(this.code) {
-            case 1:
-                name = "콜라";
+            case 1: name = "콜라";
                 break;
-            case 2:
-                name = "사이다";
+            case 2: name = "사이다";
                 break;
-            case 3:
-                name = "녹차";
+            case 3: name = "녹차";
                 break;
-            case 4:
-                name = "홍차";
+            case 4: name = "홍차";
                 break;
-            case 5:
-                name = "밀크티";
+            case 5: name = "밀크티";
                 break;
-            case 6:
-                name = "탄산수";
+            case 6: name = "탄산수";
                 break;
-            case 7:
-                name = "보리차";
+            case 7: name = "보리차";
                 break;
-            case 8:
-                name = "캔커피";
+            case 8: name = "캔커피";
                 break;
-            case 9:
-                name = "물";
+            case 9: name = "물";
                 break;
-            case 10:
-                name = "에너지드링크";
+            case 10: name = "에너지드링크";
                 break;
-            case 11:
-                name = "바닷물";
+            case 11: name = "바닷물";
                 break;
-            case 12:
-                name = "식혜";
+            case 12: name = "식혜";
                 break;
-            case 13:
-                name = "아이스티";
+            case 13: name = "아이스티";
                 break;
-            case 14:
-                name = "딸기주스";
+            case 14: name = "딸기주스";
                 break;
-            case 15:
-                name = "오렌지주스";
+            case 15: name = "오렌지주스";
                 break;
-            case 16:
-                name = "포도주스";
+            case 16: name = "포도주스";
                 break;
-            case 17:
-                name = "이온음료";
+            case 17: name = "이온음료";
                 break;
-            case 18:
-                name = "아메리카노";
+            case 18: name = "아메리카노";
                 break;
-            case 19:
-                name = "핫초코";
+            case 19: name = "핫초코";
                 break;
-            case 20:
-                name = "카페라떼";
+            case 20: name = "카페라떼";
                 break;
+            default: System.out.println("음료 코드가 잘못되었습니다.");
+                name = "";
         }
         price = 1000;
         stock = 10;
@@ -95,16 +81,17 @@ public class Item {
     }
 
     public boolean checkStock(int count) {
-        if (count > stock)
+        if (count > stock) {
             return false;
-        else
+        } else {
             return true;
+        }
     }
 
     public boolean updateStock(int count) {
-        if (count > stock)
+        if (count > stock) {
             return false;
-        else {
+        } else {
             stock -= count;
             return true;
         }
