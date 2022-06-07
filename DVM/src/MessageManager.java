@@ -4,7 +4,16 @@ import Model.Message;
 
 public class MessageManager {
 
-    public MessageManager() {}
+    private static MessageManager uniqueMessageManager;
+
+    private MessageManager() {}
+
+    public static MessageManager getInstance(){
+        if(uniqueMessageManager==null)
+            uniqueMessageManager=new MessageManager();
+
+        return uniqueMessageManager;
+    }
 
     private Serializer mySerializer = new Serializer();
 //    String host = "localhost";

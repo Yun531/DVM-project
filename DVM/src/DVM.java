@@ -8,7 +8,9 @@ public class DVM {
     private LinkedList<String> prepayItemList = new LinkedList<String>();
     private String adminPassword;
 
-    public DVM() {
+    private static DVM uniqueDVM;
+
+    private DVM() {
         this.location = new Location(0,0);
         this.itemList = new Item[20];
         for(int i = 0; i < 20 ; ++i){
@@ -18,6 +20,11 @@ public class DVM {
         this.adminPassword = "1q2w3e4r";
         vCodeList.add("1q2w3e4r5t"); vCodeList.add("q1w2e3r4t5"); vCodeList.add("qwert12345");
         prepayItemList.add("302"); prepayItemList.add("1213"); prepayItemList.add("105");
+    }
+    public static DVM getInstance(){
+        if(uniqueDVM==null)
+            uniqueDVM=new DVM();
+        return uniqueDVM;
     }
 
     public String getId(){

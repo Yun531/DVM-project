@@ -4,8 +4,8 @@ import Model.Message;
 public class Controller {
 
     public Controller() {
-        myDVM = new DVM();
-        myMessageManager = new MessageManager();
+        myDVM = DVM.getInstance();
+        myMessageManager = MessageManager.getInstance();
     }
 
     private String dCode;
