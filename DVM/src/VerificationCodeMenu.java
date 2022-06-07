@@ -15,7 +15,6 @@ public class VerificationCodeMenu extends Pay{
             return 0; //showMenu로 돌아감
         }
         else if(isRightVerificationCode(Info) && myDVM.isValidVerificationCode(Info)){
-            getOutDrink(myDVM.reqVerificationCodeItem(Info));
             return 1;
         }
         else {

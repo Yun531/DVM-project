@@ -22,7 +22,7 @@ public class Controller {
     private DVM myDVM;
     private MessageManager myMessageManager;
     private ArrayList<Message> myMessage= new ArrayList<Message>();
-    private String dstID = "team4";
+    private String dstID = "Team4";
     private PaymentPage paymentPage;
     private PrePaymentPage prePaymentPage;
     private VerificationCodeMenu verificationCodeMenu;
@@ -292,79 +292,15 @@ public class Controller {
                     System.out.println("선결제를 진행하지 않고, 메뉴 선택으로 돌아갑니다.");
                 }
             }
-            /*    String UserVCode;
-                UserVCode = createVerificationCode();
-                myMessageManager.sendReqMsg("PrepaymentCheck", dCode, count, UserVCode, dstID);
-                System.out.println("선결제가 완료되었습니다.\n" +
-                        "인증코드: " + UserVCode);
-            }*/
             else{
                 System.out.println("해당 음료에 대한 재고를 보유한 DVM이 존재하지 않습니다.");
             }
         }
     }
 
-    /*public void showPaymentPage(int totalPrice) {
-        String cardInfo;
-        boolean check;
-
-        System.out.println("<결제>");
-        System.out.println("(메뉴 선택으로 돌아가려면 \"0\"을 입력해주세요)\n");
-        System.out.println("카드 번호를 입력하세요.");
-        System.out.print(">");
-
-        cardInfo=scan.nextLine();
-        if(cardInfo.equals("0"))
-            return; //showMenu 로 돌아감
-        else {
-            check = CardCompany.isValidCard(cardInfo,totalPrice);
-            if (check) {
-                CardCompany.deductMoney(cardInfo,totalPrice);
-                if(myDVM.updateStock(Integer.parseInt(dCode), count)) {
-                    getOutDrink(Integer.parseInt(dCode) + count * 100);
-                }
-                return;
-            }
-            else {
-                System.out.println("카드 정보가 올바르지 않거나 잔액이 부족하여 메뉴 선택으로 돌아갑니다.");
-                return; //showMenu로 돌아감
-            }
-        }
-    }*/
-
 
     public void showVerificationCodeMenu() {
         verificationCodeMenu.pay("1", 0, 0, "0");
-        /*String vCode = "입력오류";
-        boolean vCodeTR = false;
-
-        while(true) {
-            System.out.println("선결제 후 받은 인증코드를 입력해주세요\n" +
-                    "(메뉴 선택으로 돌아가려면 “0”를 입력해주세요)\n");
-            System.out.print(">");
-
-            try {
-                vCode = scan.next();
-            } catch(InputMismatchException ime) {
-                System.out.println("잘못된 입력입니다.");
-                continue;
-            }
-
-            if(isRightVerificationCode(vCode)) {          //인증코드 입력형식 test
-                break;
-            }
-            System.out.println("입력하신 인증코드가 입력형식에 맞지 않습니다.\n");
-
-        }
-
-        vCodeTR = myDVM.isValidVerificationCode(vCode);             //유효한 인증코드 test
-        if(vCode.equals("0")) {
-
-        } else if (!vCodeTR) {
-            System.out.println("유효하지 않은 인증코드입니다.");
-        } else {
-            getOutDrink(myDVM.reqVerificationCodeItem(vCode));
-        }*/
     }
 
 
