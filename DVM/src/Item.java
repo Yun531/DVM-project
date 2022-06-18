@@ -55,7 +55,9 @@ public class Item {
                 name = "";
         }
         price = 1000;
-        stock = 10;
+        //stock = 10;
+        //test
+        stock = 5;
     }
 
     public String getName() {

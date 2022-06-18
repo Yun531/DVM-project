@@ -7,7 +7,7 @@ import Model.Message;
  * - 대부분의 기능 담당.
  */
 public class Controller {
-
+    final int MAX_SALESNUM = 7;
     public Controller() {
         myDVM = DVM.getInstance();
         myMessageManager = MessageManager.getInstance();
@@ -17,8 +17,8 @@ public class Controller {
 
     }
 
-    private String dCode;
-    private int count;
+    private String drinkCode;
+    private int drinkCount;
     private DVM myDVM;
     private MessageManager myMessageManager;
     private ArrayList<Message> myMessage= new ArrayList<Message>();
@@ -26,9 +26,10 @@ public class Controller {
     private PaymentPage paymentPage;
     private PrePaymentPage prePaymentPage;
     private VerificationCodeMenu verificationCodeMenu;
+    private ArrayList<Message> receivedMsgList = new ArrayList<Message>();
+    private String msgTeamID;
 
     Scanner scan=new Scanner(System.in);
-
 
     public void showMenu() {
         int mode;
@@ -86,35 +87,35 @@ public class Controller {
     }
 
     public int isValidCode() {
-        switch(dCode){
+        switch(drinkCode){
             case "0":
                 return 0;
             case "1":
-                dCode = "01";
+                drinkCode = "01";
                 return 1;
             case "2":
-                dCode = "02";
+                drinkCode = "02";
                 return 1;
             case "3":
-                dCode = "03";
+                drinkCode = "03";
                 return 1;
             case "4":
-                dCode = "04";
+                drinkCode = "04";
                 return 1;
             case "5":
-                dCode = "05";
+                drinkCode = "05";
                 return 1;
             case "6":
-                dCode = "06";
+                drinkCode = "06";
                 return 1;
             case "7":
-                dCode = "07";
+                drinkCode = "07";
                 return 1;
             case "8":
-                dCode = "08";
+                drinkCode = "08";
                 return 1;
             case "9":
-                dCode = "09";
+                drinkCode = "09";
                 return 1;
             case "01":
             case "02":
@@ -143,9 +144,9 @@ public class Controller {
     }
 
     public int isValidCount() {
-        if(count == 0) {
+        if(drinkCount == 0) {
             return 0;
-        } else if((count > 0) && ( count < 1000)) {
+        } else if((drinkCount > 0) && ( drinkCount < 1000)) {
             return 1;
         } else {
             return -1;
@@ -155,49 +156,43 @@ public class Controller {
     public Location getClosestDVM() {
         Location returnLoc = new Location();
         Location myLoc = myDVM.getLocation();
-        int x = myLoc.getX();
-        int y = myLoc.getY();
-        int min = 9999;
-        String tempID = " ";
-        // Todo: Server 내에 msgList에 접근하여 수신(응답)받은 Message Object를 하나씩 가져온다.
-        myMessageManager.sendReqMsg("StockCheckRequest",dCode,count);
+        int myX = myLoc.getX();
+        int myY = myLoc.getY();
+        int minDistance = 9999;
+        String minDvmID = " ";
+        myMessageManager.sendReqMsg("StockCheckRequest", drinkCode, drinkCount);
         try{
-            Thread.sleep(5000); //message가 도착하고 처리 되기까지 기다리기
+            Thread.sleep(1000); //message가 도착하고 처리 되기까지 기다리기
         }catch(InterruptedException e){
             e.printStackTrace();
         }
-        while(myMessage.size() > 0){
-            Message temp = myMessage.remove(0);
+        while(receivedMsgList.size() > 0){
+            Message temp = receivedMsgList.remove(0);
             int compareX = temp.getMsgDescription().getDvmXCoord();
             int compareY = temp.getMsgDescription().getDvmYCoord();
             String compareID = temp.getSrcId();
             //1. 거리를 구하고
-            int resX = x - compareX;
+            int resX = myX - compareX;
             if (resX < 0) resX *= -1;
-            int resY = y - compareY;
+            int resY = myY - compareY;
             if (resY < 0) resY *= -1;
             //2. min과 비교하고
-            if( resX + resY < min) {
-            //3.
-                //더 작다면 other DVM의 위치를 저장한다.
-                tempID = compareID;
+            if( resX + resY < minDistance) {
+            //3. 더 작다면 other DVM의 위치를 저장한다.
+                minDvmID = compareID;
+                msgTeamID = minDvmID;
                 returnLoc.setX(compareX);
                 returnLoc.setY(compareY);
-            }else if (resX + resY == min) {
+            }else if (resX + resY == minDistance) {
                 //같다면 id를 비교하고
-                if(tempID.compareTo(compareID)>0){
-                    tempID = compareID;
+                if(minDvmID.compareTo(compareID)>0){
+                    minDvmID = compareID;
+                    msgTeamID = minDvmID;
                     returnLoc.setX(compareX);
                     returnLoc.setY(compareY);
                 };
             }
-                //더 멀다면 넘어가고
-
-
         }
-
-        dstID = tempID;
-
         return returnLoc;
     }
 
@@ -224,7 +219,7 @@ public class Controller {
             System.out.println("원하시는 음료의 번호를 입력해주세요.");
             System.out.print(">");
             try{
-                dCode = scan.next();
+                drinkCode = scan.next();
             }
             catch(InputMismatchException ime) {
                 System.out.println("잘못된 입력입니다.");
@@ -245,7 +240,7 @@ public class Controller {
             System.out.println("수량을 입력해주세요.");
             System.out.print(">");
             try{
-                count = scan.nextInt();
+                drinkCount = scan.nextInt();
             }
             catch(InputMismatchException ime) {
                 scan.next();
@@ -263,10 +258,9 @@ public class Controller {
         }
 
         scan.nextLine();
-        if(myDVM.checkStock(Integer.parseInt(dCode), count)) {
-            paymentPage.pay(dCode, count, calculateTotalPrice(), "0");
+        if(myDVM.checkStock(Integer.parseInt(drinkCode), drinkCount)) {
+            paymentPage.pay(drinkCode, drinkCount, calculateTotalPrice(), "0");
         } else {
-
             if(showOtherDVM(getClosestDVM())) {
                 System.out.print("안내된 DVM에서 선결제를 진행하시겠습니까?\n" +
                         "(1: 선결제 진행, 나머지 정수: 진행 취소\n" +
@@ -286,7 +280,7 @@ public class Controller {
                 }
                 scan.nextLine();
                 if(mode == 1) {
-                    prePaymentPage.pay(dCode, count, calculateTotalPrice(), dstID);
+                    prePaymentPage.pay(drinkCode, drinkCount, calculateTotalPrice(), dstID);
                 }
                 else{
                     System.out.println("선결제를 진행하지 않고, 메뉴 선택으로 돌아갑니다.");
@@ -302,7 +296,6 @@ public class Controller {
     public void showVerificationCodeMenu() {
         verificationCodeMenu.pay("1", 0, 0, "0");
     }
-
 
     public void showAdminPasswordPage() {
         int menu;
@@ -480,9 +473,9 @@ public class Controller {
     }
 
     public void setDrinkKinds() {
-        int count = 0;
+        int stockCount = 0;
         int drinkCode = 0;
-        int[] dCodeArr = new int[7];
+        int[] salesDrinkCodeArr = new int[MAX_SALESNUM];
 
         System.out.println("<음료 세팅>");
         System.out.println("현재 자판기에서 판매할 7가지 음료의 번호를 입력하고 enter를 눌러주세요");
@@ -502,19 +495,19 @@ public class Controller {
 
             if(drinkCode >= 1 && drinkCode <= 20) {
 
-                dCodeArr[count] = drinkCode;
-                count++;
+                salesDrinkCodeArr[stockCount] = drinkCode;
+                stockCount++;
 
-                for(int i=0;i<count-1;i++)
+                for(int i=0;i<stockCount-1;i++)
                 {
-                    if(dCodeArr[i]==drinkCode){
-                        count--;
+                    if(salesDrinkCodeArr[i]==drinkCode){
+                        stockCount--;
                         System.out.println("같은 음료가 이미 세팅되어 있습니다.");
                         break;
                     }
                 }
 
-                if(count == 7) {
+                if(stockCount == MAX_SALESNUM) {
                     scan.nextLine();
                     break;
                 }
@@ -523,7 +516,7 @@ public class Controller {
                 System.out.println("번호는 01~20만 입력하세요");
             }
         }
-        myDVM.saveDrinkKinds(dCodeArr);
+        myDVM.saveDrinkKinds(salesDrinkCodeArr);
     }
 
     public void receiveMsg(Message msg) {  //myDVM.checkStock() 구현 봐야 함
@@ -531,34 +524,43 @@ public class Controller {
 
         switch(msgType){
             case "StockCheckRequest":
-                dCode = msg.getMsgDescription().getItemCode();
-                count = msg.getMsgDescription().getItemNum();
-                if(myDVM.checkStock(Integer.parseInt(dCode), count)) {
-                    myMessageManager.sendResMsg("StockCheckResponse", dCode, count, myDVM.getId(), myDVM.getLocation());
+                drinkCode = msg.getMsgDescription().getItemCode();
+                drinkCount = msg.getMsgDescription().getItemNum();
+                if(myDVM.checkStock(Integer.parseInt(drinkCode), drinkCount)) {
+                    myMessageManager.sendResMsg("StockCheckResponse", drinkCode, drinkCount, myDVM.getId(), myDVM.getLocation());
                 }
                 break;
             case "SalesCheckRequest":
-                dCode = msg.getMsgDescription().getItemCode();
-                count = msg.getMsgDescription().getItemNum();
-                if(myDVM.checkStock(Integer.parseInt(dCode), count)){
-                    if(myDVM.updateStock(Integer.parseInt(dCode), count)){
-                        myMessageManager.sendResMsg("SalesCheckResponse", dCode, myDVM.getId(), myDVM.getLocation());
+                drinkCode = msg.getMsgDescription().getItemCode();
+                drinkCount = msg.getMsgDescription().getItemNum();
+                if(myDVM.checkStock(Integer.parseInt(drinkCode), drinkCount)){
+                    if(myDVM.updateStock(Integer.parseInt(drinkCode), drinkCount)){
+                        myMessageManager.sendResMsg("SalesCheckResponse", drinkCode, myDVM.getId(), myDVM.getLocation());
                     }
                 }
                 break;
             case "PrepaymentCheck":
-                dCode = msg.getMsgDescription().getItemCode();
-                myDVM.saveVerificationCode(msg.getMsgDescription().getAuthCode(), Integer.parseInt(dCode), count);
+                drinkCode = msg.getMsgDescription().getItemCode();
+                myDVM.saveVerificationCode(msg.getMsgDescription().getAuthCode(), Integer.parseInt(drinkCode), drinkCount);
                 break;
             case "StockCheckResponse":
             case "SalesCheckResponse":
-                myMessage.add(msg);
+                receivedMsgList.add(msg);
                 break;
         }
     }
 
+    public void getOutDrink(int selectedDrinkInfo) {
+        int drinkCode_ = selectedDrinkInfo % 100;
+        int drinkCount_ = selectedDrinkInfo / 100;
+
+        Item item = myDVM.getItemList()[drinkCode_ -1];
+
+        System.out.println("음료: " + item.getName() + ", " + drinkCount_ + "개");
+        System.out.println("음료가 모두 배출되었습니다.\n 감사합니다.");
+    }
 
     public int calculateTotalPrice() {
-        return count * myDVM.getItemPrice(Integer.parseInt(dCode));
+        return drinkCount * myDVM.getItemPrice(Integer.parseInt(drinkCode));
     }
 }
