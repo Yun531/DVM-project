@@ -22,12 +22,11 @@ public class Controller {
     private DVM myDVM;
     private MessageManager myMessageManager;
     private ArrayList<Message> myMessage= new ArrayList<Message>();
-    private String dstID = "Team4";
+    private String msgTeamID = "Team4";
     private PaymentPage paymentPage;
     private PrePaymentPage prePaymentPage;
     private VerificationCodeMenu verificationCodeMenu;
     private ArrayList<Message> receivedMsgList = new ArrayList<Message>();
-    private String msgTeamID;
 
     Scanner scan=new Scanner(System.in);
 
@@ -280,7 +279,7 @@ public class Controller {
                 }
                 scan.nextLine();
                 if(mode == 1) {
-                    prePaymentPage.pay(drinkCode, drinkCount, calculateTotalPrice(), dstID);
+                    prePaymentPage.pay(drinkCode, drinkCount, calculateTotalPrice(), msgTeamID);
                 }
                 else{
                     System.out.println("선결제를 진행하지 않고, 메뉴 선택으로 돌아갑니다.");
@@ -548,16 +547,6 @@ public class Controller {
                 receivedMsgList.add(msg);
                 break;
         }
-    }
-
-    public void getOutDrink(int selectedDrinkInfo) {
-        int drinkCode_ = selectedDrinkInfo % 100;
-        int drinkCount_ = selectedDrinkInfo / 100;
-
-        Item item = myDVM.getItemList()[drinkCode_ -1];
-
-        System.out.println("음료: " + item.getName() + ", " + drinkCount_ + "개");
-        System.out.println("음료가 모두 배출되었습니다.\n 감사합니다.");
     }
 
     public int calculateTotalPrice() {

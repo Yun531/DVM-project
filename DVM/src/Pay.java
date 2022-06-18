@@ -42,13 +42,13 @@ public abstract class Pay {
     }
     abstract void payment();
 
-    public void getOutDrink(int Calc) {
-        int dCode_ = Calc % 100;
-        int count_ = Calc / 100;
+    public void getOutDrink(int selectedDrinkInfo) {
+        int drinkCode_ = selectedDrinkInfo % 100;
+        int drinkCount_ = selectedDrinkInfo / 100;
 
-        Item item = myDVM.getItemList()[dCode_ -1];
+        Item item = myDVM.getItemList()[drinkCode_ -1];
 
-        System.out.println("음료: " + item.getName() + ", " + count_ + "개");
+        System.out.println("음료: " + item.getName() + ", " + drinkCount_ + "개");
         System.out.println("음료가 모두 배출되었습니다.\n 감사합니다.");
     }
 
